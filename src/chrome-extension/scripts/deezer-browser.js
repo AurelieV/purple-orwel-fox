@@ -15,7 +15,7 @@ window.PURPLE_ORWEL.changeStatus(false)
 
 window.PURPLE_ORWEL.changeTrack = (track) => {
   console.log('PURPLE_ORWEL: Change track: ', track)
-  fetch('http://localhost:3000/music/track', {
+  fetch('https://localhost:3000/music/track', {
     method: 'POST',
     mode: 'no-cors',
     body: JSON.stringify(track),

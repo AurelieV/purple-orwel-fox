@@ -1,12 +1,10 @@
 const tmi = require('tmi.js')
 
-const config = require('../config/config')
-
 module.exports = {
   start,
 }
 
-async function start({ getCurrentSong }) {
+async function start({ config, foxApi }) {
   const client = new tmi.client(config)
 
   client.on('message', onMessageHandler)
@@ -18,7 +16,7 @@ async function start({ getCurrentSong }) {
   // Connect to Twitch:
   client.connect()
 
-  function onMessageHandler(channel, context, msg, self) {
+  async function onMessageHandler(channel, context, msg, self) {
     if (self) return
     if (!msg.startsWith('!')) return
 
@@ -29,11 +27,16 @@ async function start({ getCurrentSong }) {
         client.say(channel, `Salutations ${senderName}`)
         break
       case '!song':
-        const song = getCurrentSong()
-        if (song) {
-          client.say(channel, `Actuellement à l'écoute: ${song}`)
-        } else {
-          client.say(channel, "Je ne sais pas :'(")
+        try {
+          const track = await foxApi.getCurrentTrack()
+          if (track) {
+            client.say(channel, `Actuellement à l'écoute: ${track}`)
+          } else {
+            client.say(channel, "Je ne sais pas :'(")
+          }
+        } catch (err) {
+          console.log(err)
+          client.say(channel, "Oups, j'ai planté")
         }
         break
       default:

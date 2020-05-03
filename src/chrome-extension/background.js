@@ -14,7 +14,6 @@ chrome.runtime.onInstalled.addListener(function () {
     }
   })
   chrome.pageAction.onClicked.addListener((tab) => {
-    console.log('send Message')
     chrome.tabs.sendMessage(tab.id, { type: 'TOGGLE_STATUS' })
   })
 

@@ -1,0 +1,11 @@
+
+Avoir un joli front-end:
+  ☐ Ajoute Vue au front-end
+
+Avoir un backend-fonctionnel:
+  ☐ Créer un backend authentifié
+  ☐ Déployer le backend sur un vps
+  
+Coder un overlay:
+  ☐ Avoir un bouton qui s'affiche uniquement pour les viewers
+  ☐ Un statut côté backend sur le nombre de click

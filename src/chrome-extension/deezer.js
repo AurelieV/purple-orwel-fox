@@ -1,5 +1,3 @@
-// chrome.runtime.sendMessage({ type: 'showPageAction' })
-
 const injectedScript = document.createElement('script')
 injectedScript.src = chrome.extension.getURL('scripts/deezer-browser.js')
 ;(document.head || document.documentElement).appendChild(injectedScript)
