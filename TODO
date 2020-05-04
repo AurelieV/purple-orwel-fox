@@ -1,11 +1,26 @@
 
-Avoir un joli front-end:
-  ☐ Ajoute Vue au front-end
 
-Avoir un backend-fonctionnel:
-  ☐ Créer un backend authentifié
-  ☐ Déployer le backend sur un vps
-  
-Coder un overlay:
-  ☐ Avoir un bouton qui s'affiche uniquement pour les viewers
-  ☐ Un statut côté backend sur le nombre de click
+Dev:
+  ☐ Finir le Readme
+  ✔ Restracturation complète @done(20-05-03 21:29)
+  ✔ Utiliser Rig pour les tests en local @done(20-05-03 21:29)
+  ☐ Tout déployer sur un serveur
+
+Client:
+  ✔ Ajoute Vue au front-end @done(20-05-03 21:28)
+  ☐ Avoir une interface de configuration
+  ☐ Avoir un overlay
+  ✔ Avoir un panel @done(20-05-03 21:30)
+
+Server:
+  ✔ Créer un backend authentifié pour appeler l'API Twitch @done(20-05-03 21:28)
+  ☐ Endpoint pour broadcast de message @started(20-05-03 21:31)
+  ✔ Bot appel notre api @done(20-05-03 21:31)
+  ☐ Authentifié les appels provenant de l'extension twitch
+
+Streamlabs overlay:
+  ☐ Avoir une page à afficher comme overlay Streamlabs
+
+Before Prod:
+  ☐ Set cors policy
+  ☐ All config of endpoint depending on env

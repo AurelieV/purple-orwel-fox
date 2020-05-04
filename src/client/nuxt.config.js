@@ -17,8 +17,6 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
   loading: { color: '#fff' },
-  modules: ['@nuxtjs/axios'],
-  axios: {},
   server: {
     https: {
       key: fs.readFileSync(path.resolve(__dirname, '../../config/cert/server.key')),
@@ -26,4 +24,5 @@ export default {
     },
     port: 8080,
   },
+  plugins: ['@/plugins/nuxt/vue-plugins'],
 }

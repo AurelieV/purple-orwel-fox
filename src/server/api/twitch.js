@@ -10,28 +10,30 @@ function createTwitchRouter({ config, twitchApi }) {
       res.status(401).send()
     }
     try {
-      const token = authHeader.replace('Bearer ', '')
+      const token = authHeader.replace('Bearer ', '') // cradou
       const { channel_id: channelId, opaque_user_id: opaqueUserId } = jsonwebtoken.verify(
         token,
-        config.clientSecret,
+        Buffer.from(config.clientSecret, 'base64'),
         { algorithms: ['HS256'] }
       )
       req.channelId = channelId
       req.opaqueUserId = opaqueUserId
       next()
-    } catch {
+    } catch (err) {
+      console.log('err', err)
       res.status(401).send()
     }
   })
 
   router.post('/hello', async (req, res) => {
     try {
-      twitchApi.broadCastMessage(
+      await twitchApi.broadCastMessage(
         { type: 'hello', origin: req.opaqueUserId, payload: 'Hello' },
         req.channelId
       )
       res.status(200).send()
     } catch (err) {
+      console.log('Err', err)
       res.status(500).send()
     }
   })

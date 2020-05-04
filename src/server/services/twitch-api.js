@@ -1,4 +1,5 @@
 const axios = require('axios').default
+const jsonwebtoken = require('jsonwebtoken')
 
 class TwitchApi {
   constructor({ config }) {
@@ -56,19 +57,23 @@ class TwitchApi {
       pubsub_perms: { send: ['*'] },
     }
 
-    return jsonwebtoken.sign(data, this.config.clientSecret, { algorithm: 'HS256' })
+    return jsonwebtoken.sign(data, Buffer.from(this.config.clientSecret, 'base64'), {
+      algorithm: 'HS256',
+    })
   }
   async broadCastMessage(message, channelId) {
     const token = this.createPubSubToken(channelId)
     try {
       const { data } = await axios({
         method: 'post',
+        url: `https://api.twitch.tv/extensions/message/${channelId}`,
         headers: {
           'Client-ID': this.config.clientId,
           Authorization: `Bearer ${token}`,
         },
         data: {
-          message,
+          message: JSON.stringify(message),
+          content_type: 'application/json',
           targets: ['broadcast'],
         },
       })

@@ -1,12 +1,14 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const https = require('https')
+const cors = require('cors')
 
 const { createTwitchRouter } = require('./twitch')
 
 function start({ port, httpsOptions, twitchApi, twitchConfig }) {
   const app = express()
-  app.use(bodyParser.json({ type: 'text/plain' }))
+  app.use(bodyParser.json({ type: ['text/plain', 'application/json'] }))
+  app.use(cors()) // TODO: add whitelist
 
   let currentTrack = null
   app.post('/music/track', (req, res) => {

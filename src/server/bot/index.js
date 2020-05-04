@@ -39,6 +39,9 @@ async function start({ config, foxApi }) {
           client.say(channel, "Oups, j'ai planté")
         }
         break
+      case '!github':
+        client.say(channel, `Retrouve moi sur https://github.com/AurelieV ${senderName}`)
+        break
       default:
         client.say(
           channel,
