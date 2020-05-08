@@ -1,5 +1,5 @@
 <template>
-  <div class="panel-page" :class="`-${theme}`">
+  <div class="panel-page">
     <p>Hello world pouet pouet</p>
     <button @click="sayHello">Say hello</button>
     <p>{{ helloUsers.length }} personnes disent bonjour</p>
@@ -7,15 +7,8 @@
 </template>
 
 <script>
-import { CONTEXT_SET_MUTATION } from '@/plugins/vue/twitch/context-store'
+import { CONTEXT_SET_MUTATION } from '@/plugins/vue/twitch/store'
 export default {
-  head() {
-    return {
-      script: [
-        { src: 'https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js', hid: 'twitch-ext' },
-      ],
-    }
-  },
   data() {
     return {
       helloUsers: [],
@@ -25,9 +18,6 @@ export default {
   computed: {
     auth() {
       return this.$store.state.auth
-    },
-    theme() {
-      return this.$store.state.context.theme
     },
   },
   mounted() {
@@ -50,11 +40,11 @@ export default {
 
 <style lang="scss">
 .panel-page {
-  &.-light {
+  .-light & {
     background-color: #fff;
     color: #232127;
   }
-  &.-dark {
+  .-dark & {
     background-color: #201c2b;
     color: #e5e3e8;
   }

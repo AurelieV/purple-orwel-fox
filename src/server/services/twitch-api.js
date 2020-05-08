@@ -2,9 +2,10 @@ const axios = require('axios').default
 const jsonwebtoken = require('jsonwebtoken')
 
 class TwitchApi {
-  constructor({ config }) {
+  constructor({ config, firebaseApi }) {
     this.config = config
     this.isInit = this.fetchOauthToken()
+    this.firebaseApi = firebaseApi
   }
   async fetchOauthToken() {
     try {

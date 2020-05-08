@@ -1,5 +1,3 @@
 export function state() {
-  return {
-    test: '',
-  }
+  return {}
 }

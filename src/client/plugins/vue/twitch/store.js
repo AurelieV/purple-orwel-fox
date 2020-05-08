@@ -1,15 +1,19 @@
+import Vue from 'vue'
+
 export const CONTEXT_SET_MUTATION = 'Twitch context set mutation'
 
-export function createContextStoreModule() {
+export function createTwitchStoreModule() {
   return {
     state: () => {
       return {
-        theme: 'light',
+        context: {
+          theme: 'light',
+        },
       }
     },
     mutations: {
       [CONTEXT_SET_MUTATION](state, context) {
-        Object.assign(state || {}, context)
+        Vue.set(state, 'context', context)
       },
     },
   }

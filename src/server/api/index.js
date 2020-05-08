@@ -4,8 +4,9 @@ const https = require('https')
 const cors = require('cors')
 
 const { createTwitchRouter } = require('./twitch')
+const { createQueueRouter } = require('./queue')
 
-function start({ port, httpsOptions, twitchApi, twitchConfig }) {
+function start({ port, httpsOptions, twitchApi, twitchConfig, firebaseApi, foxBot }) {
   const app = express()
   app.use(bodyParser.json({ type: ['text/plain', 'application/json'] }))
   app.use(cors()) // TODO: add whitelist
@@ -30,6 +31,7 @@ function start({ port, httpsOptions, twitchApi, twitchConfig }) {
   })
 
   app.use('/twitch', createTwitchRouter({ config: twitchConfig, twitchApi }))
+  app.use('/queue', createQueueRouter({ firebaseApi, foxBot }))
 
   https.createServer(httpsOptions, app).listen(port)
 }

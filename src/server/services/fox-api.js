@@ -2,7 +2,7 @@ const axios = require('axios').default
 const https = require('https')
 
 class FoxApi {
-  constructor({ apiPath }) {
+  constructor({ apiPath, firebaseApi, bot }) {
     // TODO: different config on prod
     this.caller = axios.create({
       httpsAgent: new https.Agent({
@@ -10,6 +10,8 @@ class FoxApi {
       }),
     })
     this.apiPath = apiPath
+    this.firebaseApi = firebaseApi
+    this.bot = bot
   }
   async getCurrentTrack() {
     const { data } = await this.caller.get(`${this.apiPath}/music/track`)

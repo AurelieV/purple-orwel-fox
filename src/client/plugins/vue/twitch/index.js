@@ -1,11 +1,11 @@
 import { createAuthStoreModule, AUTH_SET_MUTATION } from './auth-store'
-import { createContextStoreModule, CONTEXT_SET_MUTATION } from './context-store'
+import { createTwitchStoreModule, CONTEXT_SET_MUTATION } from './store'
 import authFactory from './auth'
 
 export default {
   install(Vue, { store }) {
     store.registerModule('auth', createAuthStoreModule())
-    store.registerModule('context', createContextStoreModule())
+    store.registerModule('twitch', createTwitchStoreModule())
     Vue.prototype.$auth = authFactory(store)
 
     this.broadcastlisteners = []
@@ -20,24 +20,21 @@ export default {
       },
     }
 
-    if (process.client) {
-      window.Twitch.ext.onAuthorized(auth => {
-        store.commit(AUTH_SET_MUTATION, auth)
-      })
-      window.Twitch.ext.onContext(context => {
-        window.Twitch.ext.rig.log('Pouet', context)
-        store.commit(CONTEXT_SET_MUTATION, context)
-      })
-    }
-    if (process.client) {
-      window.Twitch.ext.listen('broadcast', (target, contentType, stringMessage) => {
-        try {
-          const message = JSON.parse(stringMessage)
-          this.broadcastlisteners.forEach(fn => fn(message))
-        } catch (err) {
-          console.log('ERR', err)
-        }
-      })
-    }
+    if (!process.client || !window.Twitch || !window.Twitch.ext) return
+    window.Twitch.ext.onAuthorized(auth => {
+      store.commit(AUTH_SET_MUTATION, auth)
+    })
+    window.Twitch.ext.onError(err => console.log('Twitch error', err))
+    window.Twitch.ext.onContext(context => {
+      store.commit(CONTEXT_SET_MUTATION, context)
+    })
+    window.Twitch.ext.listen('broadcast', (target, contentType, stringMessage) => {
+      try {
+        const message = JSON.parse(stringMessage)
+        this.broadcastlisteners.forEach(fn => fn(message))
+      } catch (err) {
+        console.log('ERR', err)
+      }
+    })
   },
 }

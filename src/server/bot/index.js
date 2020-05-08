@@ -1,52 +1,88 @@
 const tmi = require('tmi.js')
+const { MAX_QUEUE_ERROR, ALREADY_IN_QUEUE } = require('../services/firebase-api')
 
-module.exports = {
-  start,
-}
+class FoxBot {
+  constructor({ config, firebaseApi }) {
+    this.config = config
+    this.firebaseApi = firebaseApi
+  }
 
-async function start({ config, foxApi }) {
-  const client = new tmi.client(config)
+  async start({ foxApi }) {
+    this.foxApi = foxApi
+    const client = new tmi.client(this.config)
 
-  client.on('message', onMessageHandler)
-  client.on('connected', async () => {
-    await client.say(config.channels[0], 'Le renard est dans la place!')
-    console.log('Fox is in place')
-  })
+    client.on('message', (...data) => this.onMessageHandler(...data))
+    client.on('connected', async () => {
+      await client.say(this.config.channels[0], 'Le renard est dans la place!')
+      console.log('Fox is in place')
+    })
+    client.connect()
+    this.client = client
+  }
 
-  // Connect to Twitch:
-  client.connect()
+  async getSong({ channel }) {
+    try {
+      const track = await this.foxApi.getCurrentTrack()
+      if (track) {
+        this.client.say(channel, `Actuellement à l'écoute: ${track}`)
+      } else {
+        this.client.say(channel, "Je ne sais pas :'(")
+      }
+    } catch (err) {
+      console.log(err)
+      this.client.say(channel, "Oups, j'ai planté")
+    }
+  }
 
-  async function onMessageHandler(channel, context, msg, self) {
+  async joinQueue({ roomId, login, channel, senderName }) {
+    try {
+      await this.firebaseApi.joinQueue(roomId, login)
+      this.client.say(channel, `${senderName} a rejoint la file d'attente`)
+    } catch (err) {
+      if (err === MAX_QUEUE_ERROR) {
+        this.client.say(channel, "File d'attente pleine")
+      } else if (err === ALREADY_IN_QUEUE) {
+        this.client.say(channel, `${senderName} petit coquin, tu es déjà dans la file`)
+      } else {
+        console.log('err', err)
+        this.client.say(channel, `Impossible de rejoindre la file d'attente`)
+      }
+    }
+  }
+
+  async sendMessageTo(message, logins) {
+    return Promise.all(logins.map((login) => this.client.whisper(login, message)))
+  }
+
+  async onMessageHandler(channel, context, msg, self) {
     if (self) return
     if (!msg.startsWith('!')) return
 
-    const { 'display-name': senderName } = context
+    const { 'display-name': senderName, username: login, 'room-id': roomId } = context
 
     switch (msg) {
       case '!hello':
-        client.say(channel, `Salutations ${senderName}`)
+        this.client.say(channel, `Salutations ${senderName}`)
         break
       case '!song':
-        try {
-          const track = await foxApi.getCurrentTrack()
-          if (track) {
-            client.say(channel, `Actuellement à l'écoute: ${track}`)
-          } else {
-            client.say(channel, "Je ne sais pas :'(")
-          }
-        } catch (err) {
-          console.log(err)
-          client.say(channel, "Oups, j'ai planté")
-        }
+        await this.getSong({ channel })
         break
       case '!github':
-        client.say(channel, `Retrouve moi sur https://github.com/AurelieV ${senderName}`)
+        this.client.say(channel, `Retrouve moi sur https://github.com/AurelieV ${senderName}`)
+        break
+      case '!joinQueue':
+      case '!jq':
+        await this.joinQueue({ roomId, login, channel, senderName })
         break
       default:
-        client.say(
+        this.client.say(
           channel,
           `Tu racontes n'importe quoi ${senderName}. ${msg} n'est pas une commande que je connais. Parles en à ma maitresse pour avoir plus de feature`
         )
     }
   }
+}
+
+module.exports = {
+  FoxBot,
 }
