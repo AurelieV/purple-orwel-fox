@@ -30,17 +30,17 @@ class FirebaseApi {
 
     return queue
   }
-  async joinQueue(channelId, login) {
+  async joinQueue(channelId, user) {
     return await withRetry(async () => {
       const currentQueue = await this.getQueue(channelId)
       if (currentQueue.length >= MAX_QUEUE) {
         throw MAX_QUEUE_ERROR
       }
-      if (currentQueue.find((item) => item.login === login)) {
+      if (currentQueue.find((item) => item.id === user.id)) {
         throw ALREADY_IN_QUEUE
       }
       await this.db.collection('channels').doc(channelId).collection('queue').add({
-        login,
+        user,
         date: Timestamp.now(),
       })
     })
@@ -67,6 +67,33 @@ class FirebaseApi {
     queueSnapshot.forEach((snapshot) => queue.push({ id: snapshot.id, ...snapshot.data() }))
 
     return queue
+  }
+
+  async addMessage(channelId, message) {
+    const activeItems = await this.getActiveQueueItems(channelId)
+    const userIds = activeItems.map(({ user }) => user.id)
+    const { id: messageId } = await this.db
+      .collection('channels')
+      .doc(channelId)
+      .collection('messages')
+      .add({
+        value: message,
+        userIds,
+        date: Timestamp.now(),
+      })
+
+    return { messageId, userIds }
+  }
+
+  async getMessage(channelId, messageId) {
+    const snapshot = await this.db
+      .collection('channels')
+      .doc(channelId)
+      .collection('messages')
+      .doc(messageId)
+      .get()
+
+    return snapshot.data()
   }
 }
 

@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const https = require('https')
 const cors = require('cors')
+const Issuer = require('openid-client').Issuer
 
 const { createTwitchRouter } = require('./twitch')
 const { createQueueRouter } = require('./queue')
@@ -29,9 +30,22 @@ function start({ port, httpsOptions, twitchApi, twitchConfig, firebaseApi, foxBo
       res.status('500').send('Oups')
     }
   })
+  app.post('/admin/login', async (req, res) => {
+    const code = req.body.code
+    if (!code) {
+      return res.status('400').json({ error: 'Fields missing' })
+    }
+    try {
+      const { token, user } = await twitchApi.processOidcCode(code)
+      return res.json({ token, user })
+    } catch (e) {
+      console.log('error', e)
+      res.status('500').json({ err: 'Something wrong happen' })
+    }
+  })
 
-  app.use('/twitch', createTwitchRouter({ config: twitchConfig, twitchApi }))
-  app.use('/queue', createQueueRouter({ firebaseApi, foxBot }))
+  app.use('/twitch', createTwitchRouter({ config: twitchConfig, twitchApi, firebaseApi }))
+  app.use('/queue', createQueueRouter({ firebaseApi, twitchApi }))
 
   https.createServer(httpsOptions, app).listen(port)
 }

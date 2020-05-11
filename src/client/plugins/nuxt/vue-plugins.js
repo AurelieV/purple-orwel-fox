@@ -5,15 +5,18 @@ import { firestorePlugin } from 'vuefire'
 
 import TwitchPlugin from '../vue/twitch'
 import FoxApiPlugin from '../vue/fox-api'
+import FirebasePlugin from '../vue/firebase'
 
 export default function(context) {
-  Vue.use(TwitchPlugin, { store: context.store })
+  const { store, app } = context
+  Vue.use(firestorePlugin)
+  Vue.use(TwitchPlugin, { store })
   const client = axios.create({
     httpsAgent: new https.Agent({
       rejectUnauthorized: false,
     }),
     baseURL: 'https://localhost:3000', // TODO: change it depending on prod/dev
   })
-  Vue.use(FoxApiPlugin, { store: context.store, client })
-  Vue.use(firestorePlugin)
+  Vue.use(FoxApiPlugin, { store, client })
+  Vue.use(FirebasePlugin, { store, firebaseAuth: app.$firebaseAuth, client })
 }

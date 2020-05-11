@@ -4,7 +4,7 @@ import authFactory from './auth'
 
 export default {
   install(Vue, { store }) {
-    store.registerModule('auth', createAuthStoreModule())
+    store.registerModule('twitchAuth', createAuthStoreModule())
     store.registerModule('twitch', createTwitchStoreModule())
     Vue.prototype.$auth = authFactory(store)
 

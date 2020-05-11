@@ -9,9 +9,24 @@ export class FoxApi {
         method: 'post',
         url: '/twitch/hello',
         headers: {
-          Authorization: `Bearer ${this.store.state.auth.token}`,
+          Authorization: `Bearer ${this.store.state.twitchAuth.token}`,
         },
       })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  async getMessage(messageId) {
+    try {
+      const channelId = this.store.state.twitchAuth.channelId
+      const { data } = await this.client({
+        method: 'get',
+        url: `twitch/${channelId}/message/${messageId}`,
+        headers: {
+          Authorization: `Bearer ${this.store.state.twitchAuth.token}`,
+        },
+      })
+      return data.message
     } catch (err) {
       console.log(err)
     }

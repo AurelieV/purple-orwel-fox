@@ -23,8 +23,12 @@ firebaseAdmin.initializeApp({
 })
 
 const firebaseApi = new FirebaseApi({ db: firebaseAdmin.firestore() })
-const bot = new FoxBot({ config: botConfig, firebaseApi })
-const twitchApi = new TwitchApi({ config: twitchConfig, firebaseApi })
+const twitchApi = new TwitchApi({
+  config: twitchConfig,
+  firebaseApi,
+  firebaseAuth: firebaseAdmin.auth(),
+})
+const bot = new FoxBot({ config: botConfig, firebaseApi, twitchApi })
 const foxApi = new FoxApi({ apiPath, firebaseApi, bot })
 
 bot.start({ foxApi })

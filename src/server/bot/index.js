@@ -2,9 +2,10 @@ const tmi = require('tmi.js')
 const { MAX_QUEUE_ERROR, ALREADY_IN_QUEUE } = require('../services/firebase-api')
 
 class FoxBot {
-  constructor({ config, firebaseApi }) {
+  constructor({ config, firebaseApi, twitchApi }) {
     this.config = config
     this.firebaseApi = firebaseApi
+    this.twitchApi = twitchApi
   }
 
   async start({ foxApi }) {
@@ -36,7 +37,8 @@ class FoxBot {
 
   async joinQueue({ roomId, login, channel, senderName }) {
     try {
-      await this.firebaseApi.joinQueue(roomId, login)
+      const user = await this.twitchApi.getUserByLogin(login)
+      await this.firebaseApi.joinQueue(roomId, user)
       this.client.say(channel, `${senderName} a rejoint la file d'attente`)
     } catch (err) {
       if (err === MAX_QUEUE_ERROR) {
@@ -48,10 +50,6 @@ class FoxBot {
         this.client.say(channel, `Impossible de rejoindre la file d'attente`)
       }
     }
-  }
-
-  async sendMessageTo(message, logins) {
-    return Promise.all(logins.map((login) => this.client.whisper(login, message)))
   }
 
   async onMessageHandler(channel, context, msg, self) {

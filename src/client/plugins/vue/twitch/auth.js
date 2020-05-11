@@ -1,11 +1,11 @@
 export default function authFactory(store) {
   const isInitialized = new Promise(resolve => {
-    if (store.state.auth.token !== undefined) {
+    if (store.state.twitchAuth.token !== undefined) {
       resolve()
       return
     }
     const unwatch = store.watch(
-      state => state.auth.token,
+      state => state.twitchAuth.token,
       () => {
         resolve()
         unwatch()

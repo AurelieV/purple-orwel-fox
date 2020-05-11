@@ -1,8 +1,7 @@
 <template>
   <div class="panel-page">
     <p>Hello world pouet pouet</p>
-    <button @click="sayHello">Say hello</button>
-    <p>{{ helloUsers.length }} personnes disent bonjour</p>
+    <p>Code: {{ currentMessage }}</p>
   </div>
 </template>
 
@@ -11,13 +10,13 @@ import { CONTEXT_SET_MUTATION } from '@/plugins/vue/twitch/store'
 export default {
   data() {
     return {
-      helloUsers: [],
       unsubscribe: null,
+      currentMessage: '',
     }
   },
   computed: {
     auth() {
-      return this.$store.state.auth
+      return this.$store.state.twitchAuth
     },
   },
   mounted() {
@@ -27,12 +26,17 @@ export default {
     if (this.unsubscribe) this.unsubscribe()
   },
   methods: {
-    sayHello() {
-      this.$foxApi.sayHello()
-    },
-    handleMessage({ type, origin }) {
-      if (type !== 'hello') return
-      this.helloUsers = [...new Set([...this.helloUsers, origin])]
+    async handleMessage({ type, payload }) {
+      switch (type) {
+        case 'NEW_MESSAGE':
+          if (!this.auth || !this.auth.decode.user_id) return
+          const { userIds, messageId } = payload
+          const isAuthorized = (userIds || []).some(id => id === this.auth.decode.user_id)
+          if (!isAuthorized) return
+          const message = await this.$foxApi.getMessage(messageId)
+          this.currentMessage = message
+          break
+      }
     },
   },
 }

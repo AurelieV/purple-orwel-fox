@@ -24,5 +24,5 @@ export default {
     },
     port: 8080,
   },
-  plugins: ['@/plugins/nuxt/vue-plugins', '@/plugins/nuxt/firebase.client'],
+  plugins: ['@/plugins/nuxt/firebase.client', '@/plugins/nuxt/vue-plugins'],
 }

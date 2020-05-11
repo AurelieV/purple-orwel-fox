@@ -1,6 +1,6 @@
 const express = require('express')
 
-function createQueueRouter({ firebaseApi, foxBot }) {
+function createQueueRouter({ firebaseApi, twitchApi }) {
   const router = new express.Router()
 
   router.delete('/:channelId/:itemId', async (req, res) => {
@@ -30,10 +30,14 @@ function createQueueRouter({ firebaseApi, foxBot }) {
     const { channelId } = req.params
     const { message } = req.body
     try {
-      const activeItems = await firebaseApi.getActiveQueueItems(channelId)
-      const logins = activeItems.map(({ login }) => login)
-      console.log(message, logins)
-      await foxBot.sendMessageTo(message, logins)
+      const { userIds, messageId } = await firebaseApi.addMessage(channelId, message)
+      await twitchApi.broadCastMessage(
+        {
+          type: 'NEW_MESSAGE',
+          payload: { userIds, messageId },
+        },
+        channelId
+      )
       res.status(200).send()
     } catch (err) {
       console.log('Err', err)

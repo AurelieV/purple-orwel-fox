@@ -14,9 +14,9 @@ Client:
 
 Server:
   ✔ Créer un backend authentifié pour appeler l'API Twitch @done(20-05-03 21:28)
-  ☐ Endpoint pour broadcast de message @started(20-05-03 21:31)
+  ✔ Endpoint pour broadcast de message @started(20-05-03 21:31) @done(20-05-11 13:53) @lasted(1w16h22m36s)
   ✔ Bot appel notre api @done(20-05-03 21:31)
-  ☐ Authentifié les appels provenant de l'extension twitch
+  ✔ Authentifié les appels provenant de l'extension twitch @done(20-05-11 13:53)
 
 Streamlabs overlay:
   ☐ Avoir une page à afficher comme overlay Streamlabs
@@ -24,3 +24,7 @@ Streamlabs overlay:
 Before Prod:
   ☐ Set cors policy
   ☐ All config of endpoint depending on env
+
+☐ Logout
+☐ Sécurasition des routes admin
+☐ Ajouter helpers sur le dashboard (X first active, delete active, etc)
