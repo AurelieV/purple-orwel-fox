@@ -36,7 +36,7 @@ class FirebaseApi {
       if (currentQueue.length >= MAX_QUEUE) {
         throw MAX_QUEUE_ERROR
       }
-      if (currentQueue.find((item) => item.id === user.id)) {
+      if (currentQueue.find((item) => item.user.id === user.id)) {
         throw ALREADY_IN_QUEUE
       }
       await this.db.collection('channels').doc(channelId).collection('queue').add({

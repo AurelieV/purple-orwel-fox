@@ -28,3 +28,5 @@ Before Prod:
 ☐ Logout
 ☐ Sécurasition des routes admin
 ☐ Ajouter helpers sur le dashboard (X first active, delete active, etc)
+☐ Redécoupage propre de l'api
+☐ Authent en interne

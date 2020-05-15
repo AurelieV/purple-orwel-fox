@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.panel {
+  font-size: 1.5rem;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.-light p {
+  background-color: #fff;
+  color: #232127;
+}
+.-dark p {
+  background-color: #201c2b;
+  color: #e5e3e8;
+}

@@ -1,0 +1,17 @@
+.btn {
+  padding: $xs-space $s-space;
+  box-sizing: border-box;
+
+  &.-outlined {
+    border: 1px solid;
+    border-radius: 5px;
+    &.-primary {
+      border-color: $primary;
+      color: $primary;
+    }
+    &.-secondary {
+      border-color: $secondary;
+      color: $secondary;
+    }
+  }
+}

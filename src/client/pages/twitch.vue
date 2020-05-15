@@ -22,7 +22,7 @@ export default {
     }
   },
   async mounted() {
-    await this.$auth.isInitialized
+    await this.$twitchAuth.isInitialized
     this.isLoading = false
   },
   computed: {

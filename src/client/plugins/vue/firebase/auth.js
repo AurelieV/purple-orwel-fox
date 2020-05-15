@@ -16,6 +16,7 @@ export default function authFactory({ firebaseAuth, store, client }) {
   })
 
   // Redirect to Twitch auth page
+  // TODO: load config
   async function loginWithTwitch() {
     const client = new Oidc.UserManager({
       authority: 'https://id.twitch.tv/oauth2/.well-known/openid-configuration',
@@ -40,9 +41,14 @@ export default function authFactory({ firebaseAuth, store, client }) {
     return user
   }
 
+  async function logout() {
+    return await firebaseAuth.signOut()
+  }
+
   return {
     isInitialized,
     loginWithTwitch,
     processTwitchToken,
+    logout,
   }
 }

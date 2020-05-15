@@ -15,7 +15,7 @@ export default function(context) {
     httpsAgent: new https.Agent({
       rejectUnauthorized: false,
     }),
-    baseURL: 'https://localhost:3000', // TODO: change it depending on prod/dev
+    baseURL: 'https://twitch-api.purple-fox.fr', // TODO: change it depending on prod/dev
   })
   Vue.use(FoxApiPlugin, { store, client })
   Vue.use(FirebasePlugin, { store, firebaseAuth: app.$firebaseAuth, client })

@@ -1,7 +1,6 @@
 <template>
   <div class="panel-page">
-    <p>Hello world pouet pouet</p>
-    <p>Code: {{ currentMessage }}</p>
+    <p>{{ currentMessage || 'Pas de code' }}</p>
   </div>
 </template>
 
@@ -44,13 +43,14 @@ export default {
 
 <style lang="scss">
 .panel-page {
+  font-size: rem(20px);
   .-light & {
-    background-color: #fff;
-    color: #232127;
+    background-color: $twitch-light-bg-color;
+    color: $twitch-light-text-color;
   }
   .-dark & {
-    background-color: #201c2b;
-    color: #e5e3e8;
+    background-color: $twitch-dark-bg-color;
+    color: $twitch-dark-text-color;
   }
 }
 </style>

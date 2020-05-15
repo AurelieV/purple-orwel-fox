@@ -24,5 +24,17 @@ export default {
     },
     port: 8080,
   },
+  css: ['@/styles/global.scss'],
   plugins: ['@/plugins/nuxt/firebase.client', '@/plugins/nuxt/vue-plugins'],
+  modules: ['@nuxtjs/style-resources'],
+  styleResources: {
+    scss: [
+      '~~/node_modules/sass-rem/_rem.scss',
+      '~/styles/utils/_variables.scss',
+      '~/styles/utils/**/!(_variables).scss',
+    ],
+  },
+  generate: {
+    routes: ['/twitch/panel'],
+  },
 }

@@ -35,7 +35,7 @@ export class FoxApi {
     try {
       await this.client({
         method: 'delete',
-        url: `/queue/${channelId}/${itemId}`,
+        url: `/admin/queue/${channelId}/${itemId}`,
       })
     } catch (err) {
       console.log(err)
@@ -46,7 +46,7 @@ export class FoxApi {
     try {
       await this.client({
         method: 'patch',
-        url: `/queue/${channelId}/${itemId}/active`,
+        url: `/admin/queue/${channelId}/${itemId}/active`,
         data: { value },
       })
     } catch (err) {
@@ -58,7 +58,7 @@ export class FoxApi {
     try {
       await this.client({
         method: 'post',
-        url: `/queue/${channelId}/message`,
+        url: `/admin/queue/${channelId}/message`,
         data: { message },
       })
     } catch (err) {

@@ -4,24 +4,24 @@
     <template v-else>
       <h1>Admistration de {{ channelId }}</h1>
       <p v-if="errorMessage" class="dashboard__error">{{ errorMessage }}</p>
+      <div class="dashboard__configuration">
+        <label for="nbPlayersPerGame">Nombre de joueurs</label>
+        <input id="nbPlayersPerGame" type="number" v-model="nbPlayersPerGame" />
+      </div>
       <form @submit.prevent="sendMessageToActive" class="dashboard__send-message">
         <input maxlength="100" type="text" v-model="message" required />
-        <button type="submit" :disabled="!message">Envoyer un message</button>
+        <button type="submit" class="btn -primary -outlined" :disabled="!message">
+          Envoyer un message
+        </button>
       </form>
-      <ul class="dashboard__queue">
-        <li
-          v-for="(item, index) in queue"
-          :key="item.id"
-          class="dashboard__queue-item"
-          :class="{ '-active': item.active }"
-        >
-          <div>{{ index + 1 }} - {{ item.user.login }}</div>
-          <button @click="deleteItem(item.id)">Supprimer</button>
-          <button @click="toggleActive(item)">
-            {{ item.active ? 'Désactiver' : 'Activer' }}
-          </button>
-        </li>
-      </ul>
+      <div class="dashboard__actions">
+        <button @click="selectNext" class="btn -outlined -primary">Select next</button>
+        <button @click="deleteActive" class="btn -outlined -primary">Supprimer actifs</button>
+      </div>
+      <div class="dashboard__queues">
+        <Queue :queue="nextInQueue" :channel-id="channelId"></Queue>
+        <Queue :queue="lastInQueue" :channel-id="channelId"></Queue>
+      </div>
       <ul>
         <li v-for="message in messages" :key="message.id">{{ message.value }}</li>
       </ul>
@@ -30,7 +30,10 @@
 </template>
 
 <script>
+import Queue from '@/components/Queue'
+
 export default {
+  components: { Queue },
   data() {
     return {
       isLoading: true,
@@ -38,28 +41,21 @@ export default {
       errorMessage: null,
       message: '',
       messages: [],
+      nbPlayersPerGame: 3,
     }
   },
   props: {
     channelId: { type: String, required: true },
   },
+  computed: {
+    nextInQueue() {
+      return this.queue.slice(0, this.nbPlayersPerGame)
+    },
+    lastInQueue() {
+      return this.queue.slice(this.nbPlayersPerGame)
+    },
+  },
   methods: {
-    async deleteItem(itemId) {
-      try {
-        await this.$foxApi.deleteFromQueue(this.channelId, itemId)
-        this.errorMessage = null
-      } catch (err) {
-        this.errorMessage = err
-      }
-    },
-    async toggleActive(item) {
-      try {
-        await this.$foxApi.changeQueueItemState(this.channelId, item.id, !item.active)
-        this.errorMessage = null
-      } catch (err) {
-        this.errorMessage = err
-      }
-    },
     async sendMessageToActive() {
       try {
         await this.$foxApi.sendMessageToActive(this.channelId, this.message)
@@ -67,6 +63,30 @@ export default {
         this.message = ''
       } catch (err) {
         this.errorMessage = err
+      }
+    },
+    async selectNext() {
+      try {
+        this.errorMessage = ''
+        await Promise.all(
+          this.nextInQueue
+            .filter(({ active }) => !active)
+            .map(item => this.$foxApi.changeQueueItemState(this.channelId, item.id, true))
+        )
+      } catch {
+        this.errorMessage = "Impossible d'activer"
+      }
+    },
+    async deleteActive() {
+      try {
+        this.errorMessage = ''
+        await Promise.all(
+          this.queue
+            .filter(({ active }) => active)
+            .map(item => this.$foxApi.deleteFromQueue(this.channelId, item.id))
+        )
+      } catch {
+        this.errorMessage = 'Impossible de supprimer'
       }
     },
   },
@@ -93,7 +113,7 @@ export default {
             .doc(this.channelId)
             .collection('messages')
             .orderBy('date', 'desc')
-            .limit(10)
+            .limit(3)
         )
         this.isLoading = false
       },
@@ -105,28 +125,14 @@ export default {
 <style lang="scss">
 .dashboard {
   &__error {
-    color: red;
+    color: $error-color;
     font-style: italic;
   }
-  &__queue {
+  &__actions {
     display: flex;
-    list-style: none;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  &__queue-item {
-    padding: 0.5rem 1rem;
-    display: flex;
-    border: 1px solid black;
-    &:not(:first-child) {
-      margin-top: 1rem;
-    }
-    button {
-      margin-left: 1rem;
-    }
-    &.-active {
-      background-color: rebeccapurple;
-      color: white;
+    margin: $s-space 0;
+    :not(:first-child) {
+      margin-left: $xs-space;
     }
   }
   &__send-message {
@@ -136,6 +142,23 @@ export default {
     }
     button {
       margin-left: 1rem;
+    }
+  }
+  &__configuration {
+    margin-bottom: $m-space;
+    display: flex;
+    input {
+      width: 50px;
+      margin-left: $s-space;
+    }
+  }
+  &__queues {
+    display: flex;
+    .queue {
+      flex: 1;
+      &:not(:first-child) {
+        margin-left: $m-space;
+      }
     }
   }
 }

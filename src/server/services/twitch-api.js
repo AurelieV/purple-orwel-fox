@@ -7,6 +7,7 @@ class TwitchApi {
     this.isInit = this.fetchOauthToken()
     this.firebaseApi = firebaseApi
     this.firebaseAuth = firebaseAuth
+    this.usersByLogin = {}
   }
   async fetchOauthToken() {
     try {
@@ -44,6 +45,12 @@ class TwitchApi {
     }
   }
   async getUserByLogin(login) {
+    if (this.usersByLogin[login]) return this.usersByLogin[login]
+    const user = await this.fetchUserByLogin(login)
+    this.usersByLogin[login] = user
+    return user
+  }
+  async fetchUserByLogin(login) {
     const { data } = await this.callTwitchApi({
       method: 'get',
       url: 'https://api.twitch.tv/helix/users',

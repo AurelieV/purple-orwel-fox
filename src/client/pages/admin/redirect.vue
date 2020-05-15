@@ -20,7 +20,7 @@ export default {
     }
     try {
       const user = await this.$dbAuth.processTwitchToken(code)
-      this.$router.push({ name: 'admin', query: { channelId: user.id } })
+      this.$router.push({ name: 'admin' })
     } catch (err) {
       console.log('Authent error', err)
       this.errorMessage = "Impossible de procéder à l'authentification"

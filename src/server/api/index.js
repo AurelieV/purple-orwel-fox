@@ -5,7 +5,7 @@ const cors = require('cors')
 const Issuer = require('openid-client').Issuer
 
 const { createTwitchRouter } = require('./twitch')
-const { createQueueRouter } = require('./queue')
+const { createAdminRouter } = require('./admin')
 
 function start({ port, httpsOptions, twitchApi, twitchConfig, firebaseApi, foxBot }) {
   const app = express()
@@ -21,31 +21,9 @@ function start({ port, httpsOptions, twitchApi, twitchConfig, firebaseApi, foxBo
   app.get('/music/track', (req, res) => {
     res.json({ track: currentTrack })
   })
-  app.get('/test/:login', async (req, res) => {
-    try {
-      const data = await twitchApi.getUserByLogin(req.params.login)
-      res.json({ user: data })
-    } catch (err) {
-      console.log('Error', err)
-      res.status('500').send('Oups')
-    }
-  })
-  app.post('/admin/login', async (req, res) => {
-    const code = req.body.code
-    if (!code) {
-      return res.status('400').json({ error: 'Fields missing' })
-    }
-    try {
-      const { token, user } = await twitchApi.processOidcCode(code)
-      return res.json({ token, user })
-    } catch (e) {
-      console.log('error', e)
-      res.status('500').json({ err: 'Something wrong happen' })
-    }
-  })
 
   app.use('/twitch', createTwitchRouter({ config: twitchConfig, twitchApi, firebaseApi }))
-  app.use('/queue', createQueueRouter({ firebaseApi, twitchApi }))
+  app.use('/admin', createAdminRouter({ firebaseApi, twitchApi }))
 
   https.createServer(httpsOptions, app).listen(port)
 }
