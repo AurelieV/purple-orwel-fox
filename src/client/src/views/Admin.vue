@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { IS_CONNECTED } from '@/plugins/vue/firebase/store'
+import { IS_CONNECTED } from '@/plugins/firebase/store'
 import Dashboard from '@/components/Dashboard'
 
 export default {
