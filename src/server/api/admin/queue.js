@@ -5,6 +5,9 @@ function createQueueRouter({ firebaseApi, twitchApi }) {
 
   router.delete('/:channelId/:itemId', async (req, res) => {
     const { channelId, itemId } = req.params
+    if (channelId !== req.uid) {
+      return res.status(403).send()
+    }
     try {
       await firebaseApi.deleteFromQueue(channelId, itemId)
       res.status(200).send()
@@ -16,6 +19,9 @@ function createQueueRouter({ firebaseApi, twitchApi }) {
 
   router.patch('/:channelId/:itemId/active', async (req, res) => {
     const { channelId, itemId } = req.params
+    if (channelId !== req.uid) {
+      return res.status(403).send()
+    }
     const { value } = req.body
     try {
       await firebaseApi.changeQueueItemState(channelId, itemId, !!value)
@@ -29,6 +35,9 @@ function createQueueRouter({ firebaseApi, twitchApi }) {
   router.post('/:channelId/message', async (req, res) => {
     const { channelId } = req.params
     const { message } = req.body
+    if (channelId !== req.uid) {
+      return res.status(403).send()
+    }
     try {
       const { userIds, messageId } = await firebaseApi.addMessage(channelId, message)
       await twitchApi.broadCastMessage(

@@ -1,12 +1,15 @@
 const tmi = require('tmi.js')
 const { MAX_QUEUE_ERROR, ALREADY_IN_QUEUE } = require('../services/firebase-api')
 const commands = require('./commands.json')
+const PUNT_TRIGGER_VALUE = 3
 
 class FoxBot {
   constructor({ config, firebaseApi, twitchApi }) {
     this.config = config
     this.firebaseApi = firebaseApi
     this.twitchApi = twitchApi
+    this.puntTimeout = null
+    this.punts = []
   }
 
   async start({ foxApi }) {
@@ -112,6 +115,19 @@ class FoxBot {
     }
   }
 
+  async punt({ roomId, channel, login }) {
+    if (this.punts.includes(login)) return
+    if (this.puntTimeout) {
+      clearTimeout(this.puntTimeout)
+    }
+    this.punts.push(login)
+    this.puntTimeout = setTimeout(() => (this.punts = []), 1000 * 60)
+    if (PUNT_TRIGGER_VALUE === this.punts.length) {
+      const puntCounter = await this.firebaseApi.triggerPunt(roomId)
+      return this.client.say(channel, `Punt! Déjà ${puntCounter} fois`)
+    }
+  }
+
   async onMessageHandler(channel, context, msg, self) {
     if (self) return
     if (!msg.startsWith('!')) return
@@ -141,6 +157,9 @@ class FoxBot {
       case '!leaveQueue':
       case '!lq':
         await this.leaveQueue({ channel, roomId, login, senderName })
+        break
+      case '!punt':
+        await this.punt({ roomId, channel, login })
         break
       default:
         const message = commands[msg]

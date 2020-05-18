@@ -3,6 +3,7 @@
     <p v-if="isLoading">Chargement des données...</p>
     <template v-else>
       <h1>Admistration de {{ channelId }}</h1>
+      <button class="btn -primary -outlined" @click="resetPunt">Reset punt</button>
       <p v-if="errorMessage" class="dashboard__error">{{ errorMessage }}</p>
       <div class="dashboard__configuration">
         <label for="nbPlayersPerGame">Nombre de joueurs</label>
@@ -83,6 +84,14 @@ export default {
         )
       } catch {
         this.errorMessage = 'Impossible de supprimer'
+      }
+    },
+    async resetPunt() {
+      try {
+        this.errorMessage = ''
+        await this.$foxApi.resetPunt(this.channelId)
+      } catch {
+        this.errorMessage = 'Impossible de reset'
       }
     },
   },

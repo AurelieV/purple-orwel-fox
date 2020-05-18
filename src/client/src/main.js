@@ -23,8 +23,8 @@ const client = axios.create({
   }),
   baseURL: 'https://localhost:3000/', // TODO: change it depending on prod/dev
 })
-Vue.use(FoxApiPlugin, { store, client })
 Vue.use(FirebasePlugin, { store, client })
+Vue.use(FoxApiPlugin, { store, client, firebaseAuth: Vue.prototype.$dbAuth })
 
 new Vue({
   router,

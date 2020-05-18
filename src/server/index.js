@@ -32,4 +32,12 @@ const bot = new FoxBot({ config: botConfig, firebaseApi, twitchApi })
 const foxApi = new FoxApi({ apiPath, firebaseApi, bot })
 
 bot.start({ foxApi })
-startAPI({ port: 3000, httpsOptions, twitchApi, twitchConfig, firebaseApi, foxBot: bot })
+startAPI({
+  port: 3000,
+  httpsOptions,
+  twitchApi,
+  twitchConfig,
+  firebaseApi,
+  foxBot: bot,
+  firebaseAuth: firebaseAdmin.auth(),
+})

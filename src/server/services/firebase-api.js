@@ -1,6 +1,7 @@
 const firebaseAdmin = require('firebase-admin')
 
 const Timestamp = firebaseAdmin.firestore.Timestamp
+const FieldValue = firebaseAdmin.firestore.FieldValue
 
 const MAX_QUEUE = 20
 const MAX_QUEUE_ERROR = 'Max queue error'
@@ -97,6 +98,31 @@ class FirebaseApi {
       .get()
 
     return snapshot.data()
+  }
+
+  async getChannelInfo(channelId) {
+    const snapshot = await this.db.collection('channels').doc(channelId).get()
+
+    return snapshot.data()
+  }
+
+  async triggerPunt(channelId) {
+    await this.db
+      .collection('channels')
+      .doc(channelId)
+      .update({
+        puntCounter: FieldValue.increment(1),
+      })
+
+    const channel = await this.getChannelInfo(channelId)
+
+    return channel.puntCounter
+  }
+
+  async resetPunt(channelId) {
+    await this.db.collection('channels').doc(channelId).update({
+      puntCounter: 0,
+    })
   }
 }
 

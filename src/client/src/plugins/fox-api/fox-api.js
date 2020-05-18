@@ -1,39 +1,21 @@
 export class FoxApi {
-  constructor({ store, client }) {
+  constructor({ store, client, firebaseAuth }) {
     this.store = store
     this.client = client
+    this.firebaseAuth = firebaseAuth
   }
-  async sayHello() {
-    try {
-      await this.client({
-        method: 'post',
-        url: '/twitch/hello',
-        headers: {
-          Authorization: `Bearer ${this.store.state.twitchAuth.token}`,
-        },
-      })
-    } catch (err) {
-      console.log(err)
-    }
-  }
-  async getMessage(messageId) {
-    try {
-      const channelId = this.store.state.twitchAuth.channelId
-      const { data } = await this.client({
-        method: 'get',
-        url: `twitch/${channelId}/message/${messageId}`,
-        headers: {
-          Authorization: `Bearer ${this.store.state.twitchAuth.token}`,
-        },
-      })
-      return data.message
-    } catch (err) {
-      console.log(err)
-    }
+  async sendAdminRequest(params) {
+    const token = await this.firebaseAuth.getToken()
+    return this.client({
+      ...params,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
   }
   async deleteFromQueue(channelId, itemId) {
     try {
-      await this.client({
+      await this.sendAdminRequest({
         method: 'delete',
         url: `/admin/queue/${channelId}/${itemId}`,
       })
@@ -44,7 +26,7 @@ export class FoxApi {
   }
   async changeQueueItemState(channelId, itemId, value) {
     try {
-      await this.client({
+      await this.sendAdminRequest({
         method: 'patch',
         url: `/admin/queue/${channelId}/${itemId}/active`,
         data: { value },
@@ -56,10 +38,21 @@ export class FoxApi {
   }
   async sendMessageToActive(channelId, message) {
     try {
-      await this.client({
+      await this.sendAdminRequest({
         method: 'post',
         url: `/admin/queue/${channelId}/message`,
         data: { message },
+      })
+    } catch (err) {
+      console.log(err)
+      throw err
+    }
+  }
+  async resetPunt(channelId) {
+    try {
+      await this.sendAdminRequest({
+        method: 'post',
+        url: `/admin/${channelId}/punt/reset`,
       })
     } catch (err) {
       console.log(err)

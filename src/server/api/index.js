@@ -7,7 +7,7 @@ const Issuer = require('openid-client').Issuer
 const { createTwitchRouter } = require('./twitch')
 const { createAdminRouter } = require('./admin')
 
-function start({ port, httpsOptions, twitchApi, twitchConfig, firebaseApi, foxBot }) {
+function start({ port, httpsOptions, twitchApi, twitchConfig, firebaseApi, foxBot, firebaseAuth }) {
   const app = express()
   app.use(bodyParser.json({ type: ['text/plain', 'application/json'] }))
   app.use(cors()) // TODO: add whitelist
@@ -23,7 +23,7 @@ function start({ port, httpsOptions, twitchApi, twitchConfig, firebaseApi, foxBo
   })
 
   app.use('/twitch', createTwitchRouter({ config: twitchConfig, twitchApi, firebaseApi }))
-  app.use('/admin', createAdminRouter({ firebaseApi, twitchApi }))
+  app.use('/admin', createAdminRouter({ firebaseApi, twitchApi, firebaseAuth }))
 
   https.createServer(httpsOptions, app).listen(port)
 }

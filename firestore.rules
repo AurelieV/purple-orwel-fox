@@ -4,6 +4,9 @@ service cloud.firestore {
     match /cities/{document=**} {
       allow read, write: if false;
     }
+    match /channels/{channelId} {
+      allow read: if true;
+    }
     match /channels/{channelId}/queue/{itemId} {
       allow read: if true;
     }

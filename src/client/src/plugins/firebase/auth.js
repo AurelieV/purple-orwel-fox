@@ -45,10 +45,15 @@ export default function authFactory({ firebaseAuth, store, client }) {
     return await firebaseAuth.signOut()
   }
 
+  async function getToken() {
+    return await firebaseAuth.currentUser.getIdToken()
+  }
+
   return {
     isInitialized,
     loginWithTwitch,
     processTwitchToken,
     logout,
+    getToken,
   }
 }
