@@ -1,5 +1,6 @@
 const tmi = require('tmi.js')
 const { MAX_QUEUE_ERROR, ALREADY_IN_QUEUE } = require('../services/firebase-api')
+const commands = require('./commands.json')
 
 class FoxBot {
   constructor({ config, firebaseApi, twitchApi }) {
@@ -38,8 +39,8 @@ class FoxBot {
   async joinQueue({ roomId, login, channel, senderName }) {
     try {
       const user = await this.twitchApi.getUserByLogin(login)
-      await this.firebaseApi.joinQueue(roomId, user)
-      this.client.say(channel, `${senderName} a rejoint la file d'attente`)
+      const position = await this.firebaseApi.joinQueue(roomId, user)
+      this.client.say(channel, `${senderName} a rejoint la file d'attente en position ${position}`)
     } catch (err) {
       if (err === MAX_QUEUE_ERROR) {
         this.client.say(channel, "File d'attente pleine")
@@ -49,6 +50,65 @@ class FoxBot {
         console.log('err', err)
         this.client.say(channel, `Impossible de rejoindre la file d'attente`)
       }
+    }
+  }
+
+  async getPositionInQueue({ channel, login, senderName, roomId }) {
+    try {
+      const { id: userId } = await this.twitchApi.getUserByLogin(login)
+      const queue = await this.firebaseApi.getQueue(roomId)
+      const position = (queue || []).findIndex(({ user }) => user.id === userId)
+      if (position === -1) {
+        return this.client.say(
+          channel,
+          `Tu n'es pas dans la queue ${senderName}. Pour la rejoindre tu peux taper la commande !jq
+          Actuellement ${queue.length} personnes`
+        )
+      }
+      return this.client.say(
+        channel,
+        `${senderName} tu es en position ${position + 1} dans la queue`
+      )
+    } catch (err) {
+      console.log('err', err)
+      return this.client.say(channel, `Désolé ${senderName} j'ai buggé`)
+    }
+  }
+
+  async getQueue({ channel, roomId }) {
+    try {
+      const queue = await this.firebaseApi.getQueue(roomId)
+      if (!queue || queue.length === 0) {
+        return this.client.say(
+          channel,
+          'Personne dans la queue pour le moment. Pour rejoindre taper !jq'
+        )
+      }
+      const message = (queue || [])
+        .map(({ user }, index) => `- ${index + 1} ${user.display_name}`)
+        .join('\n')
+      return this.client.say(channel, message)
+    } catch (err) {
+      console.log('err', err)
+      return this.client.say(channel, `Désolé j'ai buggé`)
+    }
+  }
+
+  async leaveQueue({ channel, roomId, login, senderName }) {
+    try {
+      const { id: userId } = await this.twitchApi.getUserByLogin(login)
+      const queue = await this.firebaseApi.getQueue(roomId)
+      const item = (queue || []).find(({ user }) => user.id === userId)
+      if (!item) {
+        return this.client.say(channel, `Tu n'es pas dans la queue ${senderName}.`)
+      }
+      await this.firebaseApi.deleteFromQueue(roomId, item.id)
+      this.client.say(
+        channel,
+        `Tu n'es plus dans la queue ${senderName}. ${queue.length - 1} personnes dans la queue`
+      )
+    } catch {
+      this.client.say.channel(`Désolé j'ai buggé`)
     }
   }
 
@@ -72,7 +132,21 @@ class FoxBot {
       case '!jq':
         await this.joinQueue({ roomId, login, channel, senderName })
         break
+      case '!position':
+        await this.getPositionInQueue({ channel, login, senderName, roomId })
+        break
+      case '!queue':
+        await this.getQueue({ channel, roomId })
+        break
+      case '!leaveQueue':
+      case '!lq':
+        await this.leaveQueue({ channel, roomId, login, senderName })
+        break
       default:
+        const message = commands[msg]
+        if (message) {
+          return this.client.say(channel, message)
+        }
         this.client.say(
           channel,
           `Tu racontes n'importe quoi ${senderName}. ${msg} n'est pas une commande que je connais. Parles en à ma maitresse pour avoir plus de feature`

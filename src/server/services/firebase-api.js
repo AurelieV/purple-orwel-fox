@@ -2,7 +2,7 @@ const firebaseAdmin = require('firebase-admin')
 
 const Timestamp = firebaseAdmin.firestore.Timestamp
 
-const MAX_QUEUE = 100
+const MAX_QUEUE = 20
 const MAX_QUEUE_ERROR = 'Max queue error'
 const ALREADY_IN_QUEUE = 'Already in queue'
 
@@ -24,6 +24,7 @@ class FirebaseApi {
       .collection('channels')
       .doc(channelId)
       .collection('queue')
+      .orderBy('date', 'asc')
       .get()
     const queue = []
     queueSnapshot.forEach((snapshot) => queue.push({ id: snapshot.id, ...snapshot.data() }))
@@ -43,6 +44,8 @@ class FirebaseApi {
         user,
         date: Timestamp.now(),
       })
+
+      return currentQueue.length + 1
     })
   }
   async deleteFromQueue(channelId, itemId) {
