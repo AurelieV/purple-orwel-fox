@@ -7,7 +7,6 @@ import router from './router'
 import store from './store'
 import App from './App'
 
-import TwitchPlugin from '@/plugins/twitch'
 import FoxApiPlugin from '@/plugins/fox-api'
 import FirebasePlugin from '@/plugins/firebase'
 
@@ -16,12 +15,11 @@ import '@/styles/global.scss'
 Vue.config.productionTip = false
 
 Vue.use(firestorePlugin)
-Vue.use(TwitchPlugin, { store })
 const client = axios.create({
   httpsAgent: new https.Agent({
     rejectUnauthorized: false,
   }),
-  baseURL: 'https://localhost:3000/', // TODO: change it depending on prod/dev
+  baseURL: 'https://twitch-api.purple-fox.fr/', // TODO: change it depending on prod/dev
 })
 Vue.use(FirebasePlugin, { store, client })
 Vue.use(FoxApiPlugin, { store, client, firebaseAuth: Vue.prototype.$dbAuth })

@@ -7,9 +7,10 @@
     "persistent": false
   },
   "page_action": {
-    "default_title": "Listener for Deezer"
+    "default_title": "Listener for Deezer",
+    "default_popup": "popup.html"
   },
-  "permissions": ["declarativeContent", "tabs"],
+  "permissions": ["declarativeContent", "tabs", "identity"],
   "content_scripts": [
     {
       "js": ["deezer.js"],

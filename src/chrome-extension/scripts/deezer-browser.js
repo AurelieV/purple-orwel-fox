@@ -15,17 +15,7 @@ window.PURPLE_ORWEL.changeStatus(false)
 
 window.PURPLE_ORWEL.changeTrack = (track) => {
   console.log('PURPLE_ORWEL: Change track: ', track)
-  fetch('https://twitch-api.purple-fox.fr/music/track', {
-    method: 'POST',
-    mode: 'no-cors',
-    body: JSON.stringify(track),
-  })
-    .then(() => {
-      console.log('PURPLE_ORWEL: Change track successful')
-    })
-    .catch((err) => {
-      console.error('PURPLE_ORWEL: Change track error', err)
-    })
+  window.PURPLE_ORWEL.sendMessage({ type: 'TRACK_CHANGED', val: track })
 }
 
 window.PURPLE_ORWEL.onDisplayCurrentSong = (e, track) => {
@@ -56,6 +46,7 @@ window.PURPLE_ORWEL.stop = () => {
 
 document.addEventListener('PURPLE_ORWEL_MSG', ({ detail }) => {
   const { type, origin } = detail
+  console.log('recevied message', detail)
   if (origin === 'BROWSER') return
   switch (type) {
     case 'TOGGLE_STATUS':

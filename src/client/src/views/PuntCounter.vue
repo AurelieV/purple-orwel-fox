@@ -10,7 +10,7 @@ export default {
 </script>
 
 <style lang="scss">
-.punt-page {
+.punt-counter-page {
   width: 200px;
   height: 50px;
 }

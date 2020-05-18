@@ -10,15 +10,13 @@ function sendMessageToBrowser(message) {
 
 chrome.runtime.onMessage.addListener(function (message) {
   if (typeof message !== 'object') return
+  console.log('transmitting', message)
   sendMessageToBrowser(message)
 })
 
 document.addEventListener('PURPLE_ORWEL_MSG', ({ detail }) => {
   const { type, val, origin } = detail
+  console.log('Transmission du message', detail)
   if (origin === 'CONTENT-SCRIPT') return
-  switch (type) {
-    case 'STATUS_CHANGED':
-      chrome.runtime.sendMessage({ type, val })
-      break
-  }
+  chrome.runtime.sendMessage({ type, val })
 })
