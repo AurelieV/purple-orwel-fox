@@ -21,7 +21,7 @@ const client = axios.create({
   httpsAgent: new https.Agent({
     rejectUnauthorized: false,
   }),
-  baseURL: 'http://localhost:3000', // TODO: change it depending on prod/dev
+  baseURL: 'https://localhost:3000/', // TODO: change it depending on prod/dev
 })
 Vue.use(FoxApiPlugin, { store, client })
 Vue.use(FirebasePlugin, { store, client })

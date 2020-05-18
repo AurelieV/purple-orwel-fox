@@ -22,9 +22,6 @@
         <Queue :queue="nextInQueue" :channel-id="channelId"></Queue>
         <Queue :queue="lastInQueue" :channel-id="channelId"></Queue>
       </div>
-      <ul>
-        <li v-for="message in messages" :key="message.id">{{ message.value }}</li>
-      </ul>
     </template>
   </div>
 </template>
@@ -40,8 +37,7 @@ export default {
       queue: [],
       errorMessage: null,
       message: '',
-      messages: [],
-      nbPlayersPerGame: 3,
+      nbPlayersPerGame: 8,
     }
   },
   props: {
@@ -105,15 +101,6 @@ export default {
             .doc(this.channelId)
             .collection('queue')
             .orderBy('date', 'asc')
-        )
-        await this.$bind(
-          'messages',
-          this.$db
-            .collection('channels')
-            .doc(this.channelId)
-            .collection('messages')
-            .orderBy('date', 'desc')
-            .limit(3)
         )
         this.isLoading = false
       },
