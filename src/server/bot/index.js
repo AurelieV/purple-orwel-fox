@@ -12,8 +12,7 @@ class FoxBot {
     this.punts = []
   }
 
-  async start({ foxApi }) {
-    this.foxApi = foxApi
+  async start() {
     const client = new tmi.client(this.config)
 
     client.on('message', (...data) => this.onMessageHandler(...data))
