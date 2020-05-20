@@ -124,6 +124,26 @@ class FirebaseApi {
       puntCounter: 0,
     })
   }
+
+  async setTrack(channelId, track) {
+    await this.db.collection('channels').doc(channelId).update({ track })
+  }
+
+  async createToken(user) {
+    try {
+      await this.firebaseAuth.getUser(user.id)
+    } catch (e) {
+      await this.firebaseAuth.createUser({ uid: user.id })
+    }
+    await this.firebaseAuth.setCustomUserClaims(user.id, user)
+    const token = await this.firebaseAuth.createCustomToken(user.id)
+
+    return token
+  }
+
+  async verifyIdToken(token) {
+    return this.firebaseAuth.verifyIdToken(token)
+  }
 }
 
 module.exports = { FirebaseApi, MAX_QUEUE_ERROR, ALREADY_IN_QUEUE, MAX_QUEUE }

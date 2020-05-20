@@ -11,6 +11,9 @@ export default {
     puntCounter() {
       return this.channel && this.channel.puntCounter
     },
+    currentTrack() {
+      return this.channel && this.channel.track
+    },
   },
   watch: {
     channelId: {

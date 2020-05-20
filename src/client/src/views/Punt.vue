@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import puntCounterMixin from '@/mixins/puntCounter'
+import channelInfoMixin from '@/mixins/channelInfo'
 export default {
-  mixins: [puntCounterMixin],
+  mixins: [channelInfoMixin],
   data() {
     return {
       isDisplayed: false,

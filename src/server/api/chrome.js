@@ -1,7 +1,7 @@
 const express = require('express')
-const { createQueueRouter } = require('./queue')
+const jsonwebtoken = require('jsonwebtoken')
 
-function createAdminRouter({ firebaseApi, twitchApi }) {
+function createChromeRouter({ firebaseApi, twitchApi, foxConfig }) {
   const router = new express.Router()
 
   router.post('/login', async (req, res) => {
@@ -11,7 +11,9 @@ function createAdminRouter({ firebaseApi, twitchApi }) {
     }
     try {
       const user = await twitchApi.processOidcCode(code)
-      const token = await firebaseApi.getToken(user)
+      const token = jsonwebtoken.sign({ user }, Buffer.from(foxConfig.clientSecret, 'base64'), {
+        algorithm: 'HS256',
+      })
       return res.json({ token, user })
     } catch (e) {
       console.log('error', e)
@@ -26,31 +28,35 @@ function createAdminRouter({ firebaseApi, twitchApi }) {
     }
     try {
       const token = authHeader.replace('Bearer ', '') // cradou
-      const decodeToken = await firebaseApi.verifyIdToken(token)
-      req.uid = decodeToken.uid
+      const { user } = jsonwebtoken.verify(token, Buffer.from(foxConfig.clientSecret, 'base64'), {
+        algorithms: ['HS256'],
+      })
+      req.user = user
       next()
     } catch (err) {
       res.status(401).send()
     }
   })
 
-  router.post('/:channelId/punt/reset', async (req, res) => {
+  router.post('/:channelId/track', async (req, res) => {
+    const user = req.user
     const channelId = req.params.channelId
-    if (channelId !== req.uid) {
+    if (user.id !== channelId) {
       return res.status(403).send()
     }
+    const { ART_NAME, SNG_TITLE } = req.body
+    const currentTrack = `${SNG_TITLE}, by ${ART_NAME}`
     try {
-      await firebaseApi.resetPunt(channelId)
-      res.send()
+      await firebaseApi.setTrack(channelId, currentTrack)
+      res.send('OK')
     } catch {
       res.status(500).send()
     }
   })
 
-  router.use('/queue', createQueueRouter({ firebaseApi, twitchApi }))
   return router
 }
 
 module.exports = {
-  createAdminRouter,
+  createChromeRouter,
 }

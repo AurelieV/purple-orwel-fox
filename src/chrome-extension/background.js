@@ -1,7 +1,18 @@
-let token = null
-
 chrome.runtime.onInstalled.addListener(function () {
-  let isListening = false
+  const DATA = {
+    token: null,
+    user: null,
+  }
+
+  function resetUser() {
+    DATA.token = null
+    DATA.user = null
+    chrome.storage.local.set({ isAuthenticated: false, user: null })
+  }
+
+  // Init variables
+  chrome.storage.local.set({ isListening: false, isAuthenticated: false })
+
   chrome.tabs.query({ url: 'https://www.deezer.com/*' }, (tabs) => {
     tabs.forEach((tab) => {
       console.log('Init tabs', tabs)
@@ -17,45 +28,56 @@ chrome.runtime.onInstalled.addListener(function () {
     }
   })
   chrome.runtime.onMessage.addListener((message, sender) => {
-    console.log('message received to background', message)
     if (typeof message !== 'object') return
     switch (message.type) {
       case 'STATUS_CHANGED':
-        chrome.pageAction.setIcon({
-          path: `icons/Icon${message.val ? 'Running' : 'Start'}.png`,
-          tabId: sender.tab.id,
-        })
-        chrome.pageAction.setTitle({
-          title: message.val ? 'Synchronisation active' : 'Click for start synchro',
-          tabId: sender.tab.id,
-        })
-        isListening = message.val
+        chrome.storage.local.set({ isListening: message.val })
         break
       case 'TRACK_CHANGED':
-        fetch('https://twitch-api.purple-fox.fr/music/track', {
-          method: 'POST',
-          mode: 'no-cors',
-          body: JSON.stringify(message.val),
-        })
-          .then(() => {
-            console.log('PURPLE_ORWEL: Change track successful')
-          })
-          .catch((err) => {
-            console.error('PURPLE_ORWEL: Change track error', err)
-          })
+        chrome.storage.local.set({ currentTrack: message.val })
         break
-      case 'SET_TOKEN':
-        token = message.value
+      case 'LOGOUT':
+        resetUser()
+      case 'AUTHENTICATE_WITH_CODE':
+        fetch('https://localhost:3000/chrome/login', {
+          method: 'POST',
+          body: JSON.stringify({ code: message.val }),
+        })
+          .then((res) => (res.ok ? res.json() : Promise.reject(res)))
+          .then(({ token, user }) => {
+            DATA.token = token
+            DATA.user = user
+            chrome.storage.local.set({ isAuthenticated: true, user })
+          })
+          .catch(() => resetUser())
         break
     }
   })
-  chrome.runtime.onMessage.addListener((message, sender, cb) => {
-    console.log('message received to background', message)
-    if (typeof message !== 'object') return
-    if (message.type === 'GET_STATUS') {
-      cb(isListening)
-    } else if (message.type === 'GET_IS_AUTHENTICATED') {
-      cb(token !== null)
+  chrome.storage.onChanged.addListener((changes) => {
+    if (changes.isListening) {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        const tabId = tabs[0].id
+        const isListening = changes.isListening.newValue
+        chrome.pageAction.setIcon({
+          path: `icons/Icon${isListening ? 'Running' : 'Start'}.png`,
+          tabId,
+        })
+      })
+    }
+    if (changes.currentTrack) {
+      console.log('change track for', DATA.user)
+      if (!DATA.token || !DATA.user) return
+      fetch(`https://localhost:3000/chrome/${DATA.user.id}/track`, {
+        method: 'POST',
+        body: JSON.stringify(changes.currentTrack.newValue),
+        headers: {
+          Authorization: `Bearer ${DATA.token}`,
+        },
+      }).then((res) => {
+        if (res.status === 401) {
+          resetUser()
+        }
+      })
     }
   })
 })

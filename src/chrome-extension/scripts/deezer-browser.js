@@ -45,12 +45,11 @@ window.PURPLE_ORWEL.stop = () => {
 }
 
 document.addEventListener('PURPLE_ORWEL_MSG', ({ detail }) => {
-  const { type, origin } = detail
-  console.log('recevied message', detail)
+  const { type, origin, val } = detail
   if (origin === 'BROWSER') return
   switch (type) {
-    case 'TOGGLE_STATUS':
-      if (window.PURPLE_ORWEL.isListening) {
+    case 'CHANGE_IS_LISTENING':
+      if (!val) {
         window.PURPLE_ORWEL.stop()
       } else {
         window.PURPLE_ORWEL.start()

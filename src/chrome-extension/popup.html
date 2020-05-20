@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html>
 
-<head></head>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="styles/popup.css">
+</head>
 
 <body>
-    <div id="not-connected-container">
-        <p>You should be connected to start synchronisation</p>
-        <button id="connect">Se connecter</button>
-    </div>
-    <div id="connected-container">
-        <p id="status"></p>
-        <button id="toggle-status"></button>
+    <div id="container">
+        <div id="error"></div>
+        <div id="not-connected-container">
+            <p>You should be connected to start synchronisation</p>
+            <button id="connect">Se connecter</button>
+        </div>
+        <div id="connected-container" hidden>
+            <div id="user">
+                <img id="user_img" src="">
+                <div id="user_login"></div>
+            </div>
+            <button id="logout">Se déconnecter</button>
+            <button id="toggle-status"></button>
+        </div>
+        <p id="current-track"></p>
     </div>
     <script defer src="scripts/popup.js"></script>
 </body>

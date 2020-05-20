@@ -1,12 +1,10 @@
 const axios = require('axios').default
 const jsonwebtoken = require('jsonwebtoken')
-
 class TwitchApi {
-  constructor({ config, firebaseApi, firebaseAuth }) {
+  constructor({ config, firebaseApi }) {
     this.config = config
     this.isInit = this.fetchOauthToken()
     this.firebaseApi = firebaseApi
-    this.firebaseAuth = firebaseAuth
     this.usersByLogin = {}
   }
   async fetchOauthToken() {
@@ -118,15 +116,8 @@ class TwitchApi {
 
     const { sub: userId } = jsonwebtoken.decode(data.id_token)
     const user = await this.getUserById(userId)
-    try {
-      await this.firebaseAuth.getUser(userId)
-    } catch (e) {
-      await this.firebaseAuth.createUser({ uid: userId })
-    }
-    await this.firebaseAuth.setCustomUserClaims(userId, user)
-    const token = await this.firebaseAuth.createCustomToken(userId)
 
-    return { token, user }
+    return user
   }
 }
 

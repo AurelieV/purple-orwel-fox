@@ -25,9 +25,9 @@ class FoxBot {
     this.client = client
   }
 
-  async getSong({ channel }) {
+  async getSong({ channel, roomId }) {
     try {
-      const track = await this.foxApi.getCurrentTrack()
+      const { track } = await this.firebaseApi.getChannelInfo(roomId)
       if (track) {
         this.client.say(channel, `Actuellement à l'écoute: ${track}`)
       } else {
@@ -139,7 +139,7 @@ class FoxBot {
         this.client.say(channel, `Salutations ${senderName}`)
         break
       case '!song':
-        await this.getSong({ channel })
+        await this.getSong({ channel, roomId })
         break
       case '!github':
         this.client.say(channel, `Retrouve moi sur https://github.com/AurelieV ${senderName}`)
