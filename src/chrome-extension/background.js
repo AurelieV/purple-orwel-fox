@@ -39,7 +39,7 @@ chrome.runtime.onInstalled.addListener(function () {
       case 'LOGOUT':
         resetUser()
       case 'AUTHENTICATE_WITH_CODE':
-        fetch('https://localhost:3000/chrome/login', {
+        fetch('https://twitch-api.purple-fox.fr/chrome/login', {
           method: 'POST',
           body: JSON.stringify({ code: message.val }),
         })
@@ -67,7 +67,7 @@ chrome.runtime.onInstalled.addListener(function () {
     if (changes.currentTrack) {
       console.log('change track for', DATA.user)
       if (!DATA.token || !DATA.user) return
-      fetch(`https://localhost:3000/chrome/${DATA.user.id}/track`, {
+      fetch(`https://twitch-api.purple-fox.fr/chrome/${DATA.user.id}/track`, {
         method: 'POST',
         body: JSON.stringify(changes.currentTrack.newValue),
         headers: {
