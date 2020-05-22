@@ -21,7 +21,7 @@ export default function authFactory({ firebaseAuth, store, client }) {
     const client = new Oidc.UserManager({
       authority: 'https://id.twitch.tv/oauth2/.well-known/openid-configuration',
       client_id: 'b8bh0bh0s60fc5ivzm2nyvkk6tqray',
-      redirect_uri: 'https://localhost:8080/admin/redirect',
+      redirect_uri: 'https://stream.purple-fox.fr/admin/redirect',
       response_type: 'code',
       scope: 'openid',
     })

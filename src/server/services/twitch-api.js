@@ -110,7 +110,7 @@ class TwitchApi {
         client_secret: this.config.apiSecret,
         grant_type: 'authorization_code',
         code,
-        redirect_uri: 'https://localhost:8080/admin/redirect',
+        redirect_uri: 'https://stream.purple-fox.fr/admin/redirect',
       },
     })
 
