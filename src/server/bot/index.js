@@ -1,6 +1,6 @@
 const tmi = require('tmi.js')
 const { MAX_QUEUE_ERROR, ALREADY_IN_QUEUE } = require('../services/firebase-api')
-const commands = require('./commands.json')
+const commands = require('./commands')
 const PUNT_TRIGGER_VALUE = 3
 
 class FoxBot {

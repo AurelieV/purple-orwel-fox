@@ -2,3 +2,4 @@ config/**/*.config.js
 config/**/*.config.json
 config/cert
 node_modules/
+src/client/dist
