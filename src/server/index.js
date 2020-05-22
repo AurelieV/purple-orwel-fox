@@ -22,7 +22,10 @@ firebaseAdmin.initializeApp({
   databaseURL: 'https://purplefox-9131f.firebaseio.com',
 })
 
-const firebaseApi = new FirebaseApi({ db: firebaseAdmin.firestore() })
+const firebaseApi = new FirebaseApi({
+  db: firebaseAdmin.firestore(),
+  firebaseAuth: firebaseAdmin.auth(),
+})
 const twitchApi = new TwitchApi({
   config: twitchConfig,
   firebaseApi,

@@ -11,7 +11,7 @@ function createAdminRouter({ firebaseApi, twitchApi }) {
     }
     try {
       const user = await twitchApi.processOidcCode(code)
-      const token = await firebaseApi.getToken(user)
+      const token = await firebaseApi.createToken(user)
       return res.json({ token, user })
     } catch (e) {
       console.log('error', e)

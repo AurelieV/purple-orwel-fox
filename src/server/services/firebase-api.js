@@ -17,8 +17,9 @@ async function withRetry(fn, nbRetry = 1) {
 }
 
 class FirebaseApi {
-  constructor({ db }) {
+  constructor({ db, firebaseAuth }) {
     this.db = db
+    this.firebaseAuth = firebaseAuth
   }
   async getQueue(channelId) {
     const queueSnapshot = await this.db
