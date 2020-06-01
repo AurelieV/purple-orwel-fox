@@ -1,0 +1,12 @@
+// Mixin calculating all rules for a specific media query
+// Usage: @include responsive-block('desktop') { font-size: 20px; }
+// Available breakpoints: see breakpoints
+@mixin responsive($key) {
+  @if not map-has-key($minBreakpoints, $key) {
+    @error "Invalid breakpoint";
+  }
+  $breakpoint: map-get($minBreakpoints, $key);
+  @media screen and (min-width: rem($breakpoint * 1px)) {
+    @content;
+  }
+}

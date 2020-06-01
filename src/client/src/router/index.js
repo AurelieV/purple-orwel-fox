@@ -1,20 +1,32 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Admin from '@/views/Admin'
 import AuthentRedirect from '@/views/AuthentRedirect'
-import CurrentQueue from '@/views/CurrentQueue'
-import Punt from '@/views/Punt'
-import PuntCounter from '@/views/PuntCounter'
-import CurrentTrack from '@/views/CurrentTrack'
+
+// Main
+import Main from '@/views/Main'
+import Old from '@/views/Main/Old'
+
+// Stream
+import Stream from '@/views/Stream'
+import CurrentQueue from '@/views/Stream/CurrentQueue'
+import Punt from '@/views/Stream/Punt'
+import PuntCounter from '@/views/Stream/PuntCounter'
+import CurrentTrack from '@/views/Stream/CurrentTrack'
 
 const routes = [
-  { path: '/admin', component: Admin, name: 'admin' },
-  { path: '/admin/redirect', component: AuthentRedirect, name: 'redirect' },
-  { path: '/queue/:channelId', component: CurrentQueue, name: 'current-queue' },
-  { path: '/punt/:channelId', component: Punt, name: 'punt' },
-  { path: '/punt-counter/:channelId', component: PuntCounter, name: 'punt-counter' },
-  { path: '/track/:channelId', component: CurrentTrack, name: 'track' },
+  { path: '/', component: Main, name: 'main', children: [{ path: '/old', component: Old }] },
+  { path: '/authent-redirect', component: AuthentRedirect, name: 'redirect' },
+  {
+    path: '/stream/:channelId',
+    component: Stream,
+    children: [
+      { path: '/queue', component: CurrentQueue, name: 'current-queue' },
+      { path: '/punt', component: Punt, name: 'punt' },
+      { path: '/punt-counter', component: PuntCounter, name: 'punt-counter' },
+      { path: '/track', component: CurrentTrack, name: 'track' },
+    ],
+  },
 ]
 
 Vue.use(VueRouter)

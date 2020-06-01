@@ -1,0 +1,43 @@
+button {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  text-align: inherit;
+  text-transform: inherit;
+  outline: none;
+}
+
+.pof-btn {
+  padding: $spacing-4 $spacing-5;
+  border-radius: 10px;
+  font-size: rem(16px);
+  box-sizing: border-box;
+  background-position: center;
+
+  &.-primary {
+    background-color: $purple-500;
+    color: white;
+    transition: background 0.2s linear;
+    &:hover {
+      transition: background 0.3s linear;
+      background: $purple-600 radial-gradient(circle, transparent 1%, $purple-600 1%) center/15000%;
+    }
+    &:active {
+      background-color: $purple-700;
+      background-size: 100%;
+      transition: background 0s;
+    }
+    &:disabled {
+      background: $purple-300;
+      color: hsl(hue($purple-300), 20%, lightness($neutral-400));
+    }
+  }
+}

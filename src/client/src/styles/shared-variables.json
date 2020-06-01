@@ -1,0 +1,7 @@
+{
+  "minBreakpoints": {
+    "mobile": 0,
+    "tablet": 600,
+    "desktop": 960
+  }
+}

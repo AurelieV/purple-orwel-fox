@@ -1,0 +1,19 @@
+body {
+  font-family: $default-font-family;
+}
+
+.body {
+  font-size: rem(14px);
+  @include responsive('tablet') {
+    font-size: rem(16px);
+  }
+}
+
+.title-1 {
+  font-family: $title-font-family;
+  font-size: rem(28px);
+  @include responsive('desktop') {
+    font-size: rem(32px);
+    font-weight: normal;
+  }
+}

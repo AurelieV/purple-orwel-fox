@@ -126,9 +126,9 @@ export default {
   }
   &__actions {
     display: flex;
-    margin: $s-space 0;
+    margin: $spacing-2 0;
     :not(:first-child) {
-      margin-left: $xs-space;
+      margin-left: $spacing-1;
     }
   }
   &__send-message {
@@ -141,11 +141,11 @@ export default {
     }
   }
   &__configuration {
-    margin-bottom: $m-space;
+    margin-bottom: $spacing-5;
     display: flex;
     input {
       width: 50px;
-      margin-left: $s-space;
+      margin-left: $spacing-3;
     }
   }
   &__queues {
@@ -153,7 +153,7 @@ export default {
     .queue {
       flex: 1;
       &:not(:first-child) {
-        margin-left: $m-space;
+        margin-left: $spacing-5;
       }
     }
   }

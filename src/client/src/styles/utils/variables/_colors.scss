@@ -1,0 +1,44 @@
+// Purple
+$purple-200: #e6dbf1;
+$purple-300: #cdb7e3;
+$purple-400: #a781cd;
+$purple-500: #814bb8;
+$purple-600: #5a3581;
+$purple-700: #341e4a;
+$purple-800: #0d0712;
+
+// Orange
+$orange-200: #ffe3b9;
+$orange-300: #ffd18b;
+$orange-400: #ffbf5d;
+$orange-500: #ffa317;
+$orange-600: #e69315;
+$orange-700: #cc8212;
+$orange-800: #b37210;
+
+// Neutral
+$neutral-200: #e8e8e8;
+$neutral-300: #d0d0d0;
+$neutral-400: #a0a0a0;
+$neutral-500: #707070;
+$neutral-600: #585858;
+$neutral-700: #404040;
+$neutral-800: #181818;
+
+// Twitch
+$twitch-light-bg-color: #fff;
+$twitch-dark-bg-color: #201c2b;
+$twitch-light-accent-bg-color: #6441a4;
+$twitch-light-accent-bg-color: #6441a4;
+$twitch-light-text-color: #232127;
+$twitch-dark-text-color: #e5e3e8;
+$twitch-light-link-color: #6441a4;
+$twitch-dark-link-color: #e2dbf0;
+$twitch-light-text-overlay-color: #e5e3e8;
+$twitch-dark-text-overlay-color: #e5e3e8;
+
+// Theme
+$primary-color: $purple-500;
+$secondary-color: $orange-500;
+$neutral-background-color: hsl(hue($primary-color), 10%, lightness($neutral-200));
+$error-color: red;

@@ -1,6 +1,6 @@
 import * as Oidc from 'oidc-client'
 
-export default function authFactory({ firebaseAuth, store, client }) {
+export default function authFactory({ firebaseAuth, store, client, authConfig }) {
   const isInitialized = new Promise(resolve => {
     if (store.state.firebaseAuth.uid !== undefined) {
       resolve(true)
@@ -20,8 +20,8 @@ export default function authFactory({ firebaseAuth, store, client }) {
   async function loginWithTwitch() {
     const client = new Oidc.UserManager({
       authority: 'https://id.twitch.tv/oauth2/.well-known/openid-configuration',
-      client_id: 'b8bh0bh0s60fc5ivzm2nyvkk6tqray',
-      redirect_uri: 'https://stream.purple-fox.fr/admin/redirect',
+      client_id: authConfig.twitchClientId,
+      redirect_uri: authConfig.redirectUri,
       response_type: 'code',
       scope: 'openid',
     })

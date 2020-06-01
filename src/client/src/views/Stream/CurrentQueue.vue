@@ -53,8 +53,8 @@ export default {
     display: flex;
     align-items: center;
     &__img {
-      width: $small-image-size;
-      margin-right: $s-space;
+      width: $spacing-6;
+      margin-right: $spacing-4;
     }
   }
 }

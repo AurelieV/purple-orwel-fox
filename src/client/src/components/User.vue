@@ -20,11 +20,11 @@ export default {
 .user {
   display: flex;
   align-items: center;
-  padding: $m-space;
+  padding: $spacing-5;
   width: 100%;
   &__profile-img {
-    width: $small-image-size;
-    margin-right: $xs-space;
+    width: $spacing-6;
+    margin-right: $spacing-1;
   }
   &__active-button {
     display: flex;
