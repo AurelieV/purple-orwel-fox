@@ -3,17 +3,18 @@ body {
 }
 
 .body {
-  font-size: rem(14px);
+  font-size: $font-size-2;
+  line-height: 1.5;
   @include responsive('tablet') {
-    font-size: rem(16px);
+    font-size: $font-size-3;
   }
 }
 
 .title-1 {
   font-family: $title-font-family;
-  font-size: rem(28px);
+  font-size: $font-size-6;
   @include responsive('desktop') {
-    font-size: rem(32px);
+    font-size: $font-size-7;
     font-weight: normal;
   }
 }

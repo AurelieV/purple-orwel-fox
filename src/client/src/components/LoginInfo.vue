@@ -27,11 +27,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: $spacing-4;
-  border-radius: 10px;
-  background: white;
-  border-top: $header-height-small solid $primary-color;
-  box-shadow: $shadow-lg;
+  @include card();
   &__description {
     margin-top: $spacing-4;
   }
