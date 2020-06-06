@@ -1,4 +1,5 @@
 import * as Oidc from 'oidc-client'
+import * as jwtDecode from 'jwt-decode'
 
 export default function authFactory({ firebaseAuth, store, client, authConfig }) {
   const isInitialized = new Promise(resolve => {
@@ -46,7 +47,15 @@ export default function authFactory({ firebaseAuth, store, client, authConfig })
   }
 
   async function getToken() {
+    if (!firebaseAuth.currentUser) return null
     return await firebaseAuth.currentUser.getIdToken()
+  }
+
+  async function getUserInfo() {
+    const token = await getToken()
+    if (!token) return {}
+    const { display_name: name, profile_image_url: profileImage } = jwtDecode(token)
+    return { name, profileImage }
   }
 
   return {
@@ -55,5 +64,6 @@ export default function authFactory({ firebaseAuth, store, client, authConfig })
     processTwitchToken,
     logout,
     getToken,
+    getUserInfo,
   }
 }

@@ -11,18 +11,20 @@ export function createStoreModule() {
       isAnonymous: true,
     },
     mutations: {
-      [UPDATE_FIREBASE_USER_MUTATION](state, { uid, isAnonymous }) {
+      [UPDATE_FIREBASE_USER_MUTATION](state, { user, userInfo }) {
+        const { uid, isAnonymous } = user
         state.uid = uid
         state.isAnonymous = isAnonymous
+        state.info = userInfo
       },
       [RESET_USER_MUTATION](state) {
         state.uid = null
       },
     },
     actions: {
-      async [UPDATE_USER_ACTION]({ commit }, user) {
+      async [UPDATE_USER_ACTION]({ commit }, { user, userInfo } = {}) {
         if (user) {
-          commit(UPDATE_FIREBASE_USER_MUTATION, user)
+          commit(UPDATE_FIREBASE_USER_MUTATION, { user, userInfo })
         } else {
           commit(RESET_USER_MUTATION)
         }

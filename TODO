@@ -4,9 +4,14 @@ Dev:
 Client:
   ☐ Avoir une interface de configuration
 
+Archi:
+  ☐ Renommer firebaseAuth => auth dans le store
+  ☐ Passer le plugin auth en class
+
 Design:
   ☐ Retoucher les illustrations pour avoir des viewboxs propres
   ☐ Checker les options de svg-inline pour dégager le tabindex et autres props
+  ☐ Design des notifs
 
 Before Prod:
   ☐ Set cors policy

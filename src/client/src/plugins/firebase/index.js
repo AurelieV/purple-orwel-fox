@@ -12,9 +12,11 @@ export default function install(Vue, options) {
 
   store.registerModule('firebaseAuth', createStoreModule())
   Vue.prototype.$db = db
-  Vue.prototype.$dbAuth = authFactory({ firebaseAuth, store, client, authConfig })
+  const dbAuth = authFactory({ firebaseAuth, store, client, authConfig })
+  Vue.prototype.$dbAuth = dbAuth
 
-  firebaseAuth.onAuthStateChanged(user => {
-    store.dispatch(UPDATE_USER_ACTION, user)
+  firebaseAuth.onAuthStateChanged(async user => {
+    const userInfo = await dbAuth.getUserInfo()
+    store.dispatch(UPDATE_USER_ACTION, { user, userInfo })
   })
 }

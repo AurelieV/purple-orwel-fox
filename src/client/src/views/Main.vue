@@ -2,14 +2,22 @@
   <div class="main" :class="{ '-connected': !isConnected }">
     <header class="main__header">
       <template v-if="isConnected">
-        <div class="main__header-content">Connecté en tant que {{ channelId }}</div>
+        <div class="main__header-content">
+          <div class="main__user-img">
+            <img :src="userInfo.profileImage" />
+          </div>
+          <div class="main__user-name">{{ userInfo.name }}</div>
+        </div>
         <div class="main__header-actions">
           <button class="pof-btn" @click="logout">Se déconnecter</button>
         </div>
       </template>
     </header>
     <div class="main__content">
-      <LoginInfo v-if="!isConnected"></LoginInfo>
+      <div v-if="isLoading"></div>
+      <template v-else>
+        <LoginInfo v-if="!isConnected"></LoginInfo>
+      </template>
     </div>
   </div>
 </template>
@@ -22,7 +30,7 @@ export default {
   components: { LoginInfo },
   data() {
     return {
-      errorMessage: '',
+      isLoading: true,
     }
   },
   computed: {
@@ -32,14 +40,20 @@ export default {
     isConnected() {
       return this.$store.getters[IS_CONNECTED]
     },
+    userInfo() {
+      return this.$store.state.firebaseAuth.info
+    },
+  },
+  async created() {
+    await this.$dbAuth.isInitialized
+    this.isLoading = false
   },
   methods: {
     async logout() {
       try {
-        this.errorMessage = ''
         await this.$dbAuth.logout()
       } catch {
-        this.errorMessage = 'Impossible de se déconnecter'
+        this.$notifier.error('Impossible de se déconnecter')
       }
     },
   },
@@ -64,6 +78,32 @@ export default {
   }
   &__header-content {
     flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 0px $spacing-4;
+  }
+  &__user-img {
+    margin-right: $spacing-2;
+    overflow: hidden;
+    position: relative;
+    border-radius: 50%;
+    width: $spacing-7;
+    height: $spacing-7;
+
+    &:after {
+      content: '';
+      border-radius: 50%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      position: absolute;
+      box-shadow: $inner-shadow;
+    }
+    img {
+      width: $spacing-7;
+      height: $spacing-7;
+    }
   }
   &__header-action {
     display: flex;
