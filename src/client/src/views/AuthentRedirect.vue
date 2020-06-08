@@ -26,7 +26,7 @@ export default {
       return
     }
     try {
-      await this.$dbAuth.processTwitchToken(code)
+      await this.$auth.processTwitchToken(code)
     } catch (err) {
       this.$notifier.error('Impossible de se connecter. Réessayez plus tard.')
     }

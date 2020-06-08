@@ -1,0 +1,10 @@
+$zindexes: ('header', 'modal');
+
+@function zindex($key) {
+  $index: index($zindexes, $key);
+  @if $index == null {
+    @warn 'Invalid key for zindex';
+  }
+
+  @return $index + 1;
+}

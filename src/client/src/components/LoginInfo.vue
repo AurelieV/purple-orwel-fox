@@ -15,7 +15,7 @@
 export default {
   methods: {
     async loginWithTwitch() {
-      this.$dbAuth.loginWithTwitch()
+      this.$auth.loginWithTwitch()
     },
   },
 }

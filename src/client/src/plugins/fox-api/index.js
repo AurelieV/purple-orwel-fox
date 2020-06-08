@@ -1,7 +1,7 @@
 import { FoxApi } from './fox-api'
 
 export default {
-  install(Vue, { store, client, firebaseAuth }) {
-    Vue.prototype.$foxApi = new FoxApi({ store, client, firebaseAuth })
+  install(Vue, { store, client, auth }) {
+    Vue.prototype.$foxApi = new FoxApi({ store, client, auth })
   },
 }

@@ -5,13 +5,20 @@ Client:
   ☐ Avoir une interface de configuration
 
 Archi:
-  ☐ Renommer firebaseAuth => auth dans le store
-  ☐ Passer le plugin auth en class
+  ✔ Renommer firebaseAuth => auth dans le store @done(20-06-08 17:01)
+  ✔ Passer le plugin auth en class @done(20-06-08 17:08)
+  ✔ Header dans un composant à part @done(20-06-08 17:23)
+  ☐ Rajouter storybook
 
 Design:
   ☐ Retoucher les illustrations pour avoir des viewboxs propres
   ☐ Checker les options de svg-inline pour dégager le tabindex et autres props
   ☐ Design des notifs
+  ☐ Gérer la outline en navigation clavier
+  ☐ Transition height variable
+
+Menu:
+
 
 Before Prod:
   ☐ Set cors policy

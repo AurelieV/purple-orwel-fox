@@ -23,7 +23,7 @@ const client = axios.create({
   baseURL: '/api',
 })
 Vue.use(FirebasePlugin, { store, client, firebaseConfig, authConfig })
-Vue.use(FoxApiPlugin, { store, client, firebaseAuth: Vue.prototype.$dbAuth })
+Vue.use(FoxApiPlugin, { store, client, auth: Vue.prototype.$auth })
 Vue.use(notificationsPlugin, { store })
 Vue.use(responsivePlugin)
 

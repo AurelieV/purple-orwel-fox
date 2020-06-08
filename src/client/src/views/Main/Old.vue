@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     channelId() {
-      return this.$store.state.firebaseAuth.uid
+      return this.$store.state.auth.uid
     },
     isConnected() {
       return this.$store.getters[IS_CONNECTED]
@@ -35,12 +35,12 @@ export default {
   },
   methods: {
     async loginWithTwitch() {
-      this.$dbAuth.loginWithTwitch()
+      this.$auth.loginWithTwitch()
     },
     async logout() {
       try {
         this.errorMessage = ''
-        await this.$dbAuth.logout()
+        await this.$auth.logout()
       } catch {
         this.errorMessage = 'Impossible de se déconnecter'
       }

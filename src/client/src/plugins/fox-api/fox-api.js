@@ -1,11 +1,11 @@
 export class FoxApi {
-  constructor({ store, client, firebaseAuth }) {
+  constructor({ store, client, auth }) {
     this.store = store
     this.client = client
-    this.firebaseAuth = firebaseAuth
+    this.auth = auth
   }
   async sendAdminRequest(params) {
-    const token = await this.firebaseAuth.getToken()
+    const token = await this.auth.getToken()
     return this.client({
       ...params,
       headers: {
