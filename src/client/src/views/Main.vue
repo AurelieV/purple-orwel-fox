@@ -13,7 +13,7 @@
 <script>
 import { IS_CONNECTED } from '@/plugins/firebase/store'
 import LoginInfo from '@/components/LoginInfo'
-import Header from '@/components/Header'
+import Header from '@/components/Header/Header'
 
 export default {
   components: { LoginInfo, Header },

@@ -14,17 +14,13 @@
 </template>
 
 <script>
-import Menu from '@/components/Menu'
+import Menu from '@/components/Menu/Menu'
 
 export default {
   components: { Menu },
   data() {
     return {
-      userMenuItems: [
-        { label: 'Se Déconnecter', key: 'logout' },
-        { label: 'Test', disabled: true },
-        { label: 'Test2' },
-      ],
+      userMenuItems: [{ label: 'Se Déconnecter', key: 'logout' }],
     }
   },
   computed: {

@@ -1,8 +1,9 @@
 <template>
   <!-- We stop event propagation for handle menu close. Maybe (surely) dirty -->
-  <div class="pof-menu" @click.stop="">
+  <div class="pof-menu" @click.stop="" :class="`-${align}`">
     <button
       class="pof-menu__button"
+      :class="buttonClass"
       aria-haspopup="true"
       :aria-controls="id"
       :aria-expanded="isOpened ? 'true' : 'false'"
@@ -28,11 +29,17 @@
 </template>
 
 <script>
+/** Generic component to display a button + list menu */
 export default {
   props: {
+    /** UniqueId use to generate accesibility attributes */
     id: { type: String, required: true },
+    /** List to iterate for the menu list */
     items: { type: Array, required: true },
+    /** Disabled the button for displaying the menu */
     disabled: { type: Boolean, required: false, default: false },
+    buttonClass: { type: String, required: false, default: '' },
+    align: { type: String, required: false, default: 'center' },
   },
   mounted() {
     window.document.addEventListener('click', this.onClick)
@@ -63,9 +70,8 @@ export default {
   &__list {
     position: absolute;
     top: calc(100% + #{$spacing-2});
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
+    width: auto;
+    min-width: 100%;
     background: white;
     color: $neutral-700;
     border-radius: 10px;
@@ -85,6 +91,14 @@ export default {
       border-left: $arrowSize solid transparent;
       border-right: $arrowSize solid transparent;
       border-bottom: $arrowSize solid white;
+    }
+
+    &.-center &__list {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    &.-left &__list {
+      left: 0;
     }
 
     &.fade-enter-active,

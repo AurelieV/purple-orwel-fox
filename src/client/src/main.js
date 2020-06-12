@@ -11,8 +11,8 @@ import { firebaseConfig, authConfig } from '@/../../../config/client.config'
 
 import FoxApiPlugin from '@/plugins/fox-api'
 import FirebasePlugin from '@/plugins/firebase'
-import notificationsPlugin from '@/plugins/notifications'
-import responsivePlugin from '@/plugins/responsive'
+import NotificationsPlugin from '@/plugins/notifications'
+import ResponsivePlugin from '@/plugins/responsive'
 
 import '@/styles/global.scss'
 
@@ -24,8 +24,8 @@ const client = axios.create({
 })
 Vue.use(FirebasePlugin, { store, client, firebaseConfig, authConfig })
 Vue.use(FoxApiPlugin, { store, client, auth: Vue.prototype.$auth })
-Vue.use(notificationsPlugin, { store })
-Vue.use(responsivePlugin)
+Vue.use(NotificationsPlugin, { store })
+Vue.use(ResponsivePlugin)
 
 new Vue({
   router,
