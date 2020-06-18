@@ -115,6 +115,16 @@ export default {
     cursor: pointer;
     padding: $spacing-5 $spacing-4;
     transition: background 0.2s linear;
+    overflow: hidden;
+    // Force border radius due to hover bug
+    &:first-child {
+      border-top-left-radius: inherit;
+      border-top-right-radius: inherit;
+    }
+    &:last-child {
+      border-bottom-left-radius: inherit;
+      border-bottom-right-radius: inherit;
+    }
     &:hover:not(.-disabled) {
       transition: background 0.5s linear;
       background: $purple-200 radial-gradient(circle, transparent 1%, $purple-200 1%) center/15000%;

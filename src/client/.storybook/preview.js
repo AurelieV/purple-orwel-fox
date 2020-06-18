@@ -1,4 +1,6 @@
 import { addParameters } from '@storybook/vue'
+import { themes } from '@storybook/theming'
+
 import '@storybook/addon-console'
 
 import Vue from 'vue'
@@ -13,24 +15,9 @@ Vue.use(Vuex)
 Vue.use(NotifierPlugin)
 Vue.use(ResponsivePlugin)
 
-const store = new Vuex.Store({
-  state() {
-    return {
-      auth: {
-        uid: '1234',
-        info: {
-          name: 'ConnectedUser',
-          profileImage:
-            'https://static-cdn.jtvnw.net/jtv_user_pictures/d360942e-4f5b-402a-9d36-4a34cbda9964-profile_image-300x300.png',
-        },
-      },
-    }
-  },
-})
-Vue.options.store = store
-
 addParameters({
   options: {
     showRoots: true,
+    theme: themes.dark,
   },
 })

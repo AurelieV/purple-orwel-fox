@@ -5,19 +5,22 @@ Client:
   ☐ Avoir une interface de configuration
 
 Archi:
-  ✔ Renommer firebaseAuth => auth dans le store @done(20-06-08 17:01)
-  ✔ Passer le plugin auth en class @done(20-06-08 17:08)
-  ✔ Header dans un composant à part @done(20-06-08 17:23)
-  ☐ Rajouter storybook
+  ☐ Ajouter une bibliothèque d'icône
+  ☐ Storybook ajouter les breakpoints
+  ☐ Ajouter une doc de style en mdx
 
 Design:
-  ☐ Retoucher les illustrations pour avoir des viewboxs propres
-  ☐ Checker les options de svg-inline pour dégager le tabindex et autres props
-  ☐ Design des notifs
+  ☐ Style btn-icn
   ☐ Gérer la outline en navigation clavier
   ☐ Transition height variable
+  ☐ Animation des notifs
+  ☐ Light and dark theme?
+  ☐ Retoucher les illustrations pour avoir des viewboxs propres
+  ☐ Checker les options de svg-inline pour dégager le tabindex et autres props
+  ✔ Design des notifs @done(20-06-18 18:22)
 
-Menu:
+Bug:
+  ✔ Border radius on hover sur le menu @done(20-06-18 18:49)
 
 
 Before Prod:

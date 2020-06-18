@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@@/*": ["./*"]
+    },
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src/**/*", ".storybook/**/*", "mocks/**/*"]
+}

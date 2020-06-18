@@ -9,7 +9,7 @@ const Base = {
   components: { Menu },
   template: `
     <div :style="containerStyle">
-      <Menu :items="items" button-class="pof-btn -primary" :align="align">
+      <Menu :items="items" button-class="pof-btn -primary" :align="align" id="menu">
         Click me
         <template v-slot:menu-item="{ item }">{{ item.label }}</template>
       </Menu>
