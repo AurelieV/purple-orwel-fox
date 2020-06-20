@@ -95,6 +95,7 @@ class FirebaseApi {
       .collection('channels')
       .doc(channelId)
       .collection('messages')
+      .orderBy('date', 'desc')
       .get()
 
     const messages = []

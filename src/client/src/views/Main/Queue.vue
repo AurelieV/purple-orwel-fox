@@ -9,7 +9,7 @@
         <button v-else class="pof-btn -primary" @click="join">Rejoindre</button>
       </div>
       <div class="queue-page__messages">
-        <p>Dernier code: {{ messages[0] || 'Aucun code reçu' }}</p>
+        <p>Dernier code: {{ (messages && messages[0]) || 'Aucun code reçu' }}</p>
         <button class="pof-btn -primary" @click="refreshMessages">Rafraichir le code</button>
       </div>
       <Queue :is-admin="false" :queue="queue" :channel-id="channelId"></Queue>
