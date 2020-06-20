@@ -90,6 +90,19 @@ class FirebaseApi {
     return { messageId, userIds }
   }
 
+  async getMessages(channelId) {
+    const messagesSnapshot = await this.db
+      .collection('channels')
+      .doc(channelId)
+      .collection('messages')
+      .get()
+
+    const messages = []
+    messagesSnapshot.forEach((snapshot) => messages.push({ id: snapshot.id, ...snapshot.data() }))
+
+    return messages
+  }
+
   async getMessage(channelId, messageId) {
     const snapshot = await this.db
       .collection('channels')

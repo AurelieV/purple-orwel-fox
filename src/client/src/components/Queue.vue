@@ -4,9 +4,14 @@
       v-for="item in queue"
       :key="item.id"
       class="queue__item"
-      :class="{ '-active': item.active }"
+      :class="{ '-active': isAdmin && item.active }"
     >
-      <User :user="item.user" @delete="deleteItem(item.id)" @toggleActive="toggleActive(item)" />
+      <User
+        :is-admin="isAdmin"
+        :user="item.user"
+        @delete="deleteItem(item.id)"
+        @toggleActive="toggleActive(item)"
+      />
     </li>
   </ul>
 </template>
@@ -18,9 +23,14 @@ export default {
   components: {
     User,
   },
-  props: { queue: { type: Array, required: true }, channelId: { type: String, required: true } },
+  props: {
+    queue: { type: Array, required: true },
+    channelId: { type: String, required: true },
+    isAdmin: { type: Boolean, default: true },
+  },
   methods: {
     async deleteItem(itemId) {
+      if (!this.isAdmin) return
       try {
         await this.$foxApi.deleteFromQueue(this.channelId, itemId)
         this.errorMessage = null
@@ -29,6 +39,7 @@ export default {
       }
     },
     async toggleActive(item) {
+      if (!this.isAdmin) return
       try {
         await this.$foxApi.changeQueueItemState(this.channelId, item.id, !item.active)
         this.errorMessage = null

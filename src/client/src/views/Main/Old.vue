@@ -4,11 +4,7 @@
       <p>Vous devez vous connectez pour commencer l'administration de votre channel</p>
       <button @click="loginWithTwitch">Login with Twitch</button>
     </template>
-    <template v-else>
-      <p class="error" v-if="errorMessage">{{ errorMessage }}</p>
-      <button @click="logout">Se déconnecter</button>
-      <Dashboard :channel-id="channelId"></Dashboard>
-    </template>
+    <Dashboard v-else :channel-id="channelId"></Dashboard>
   </div>
 </template>
 
@@ -50,7 +46,7 @@ export default {
 </script>
 
 <style lang="scss">
-.error {
-  color: red;
+.admin-page {
+  padding: $spacing-4;
 }
 </style>

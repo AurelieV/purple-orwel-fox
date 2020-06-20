@@ -1,11 +1,9 @@
 <template>
-  <div class="main" :class="{ '-connected': !isConnected }">
+  <div class="main" :class="isConnected ? '-connected' : '-not-connected'">
     <Header v-if="isConnected" />
-    <div class="main__content">
-      <div v-if="isLoading"></div>
-      <template v-else>
-        <LoginInfo v-if="!isConnected"></LoginInfo>
-      </template>
+    <div class="main__content" v-if="!isLoading">
+      <LoginInfo v-if="!isConnected"></LoginInfo>
+      <router-view v-else></router-view>
     </div>
   </div>
 </template>
@@ -49,6 +47,9 @@ export default {
     box-sizing: border-box;
     padding-top: $header-height;
     .-connected & {
+      display: block;
+    }
+    .-not-connected & {
       padding-top: 0;
     }
     display: flex;

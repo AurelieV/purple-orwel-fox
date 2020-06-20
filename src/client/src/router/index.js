@@ -6,6 +6,7 @@ import AuthentRedirect from '@/views/AuthentRedirect'
 // Main
 import Main from '@/views/Main'
 import Old from '@/views/Main/Old'
+import Queue from '@/views/Main/Queue'
 
 // Stream
 import Stream from '@/views/Stream'
@@ -15,7 +16,15 @@ import PuntCounter from '@/views/Stream/PuntCounter'
 import CurrentTrack from '@/views/Stream/CurrentTrack'
 
 const routes = [
-  { path: '/', component: Main, name: 'main', children: [{ path: '/old', component: Old }] },
+  {
+    path: '/',
+    component: Main,
+    name: 'main',
+    children: [
+      { path: '/old', component: Old },
+      { path: '/:channelId/queue', component: Queue },
+    ],
+  },
   { path: '/authent-redirect', component: AuthentRedirect, name: 'redirect' },
   {
     path: '/stream/:channelId',

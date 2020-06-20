@@ -2,8 +2,8 @@
   <div class="dashboard">
     <p v-if="isLoading">Chargement des données...</p>
     <template v-else>
-      <h1>Admistration de {{ channelId }}</h1>
-      <button class="btn -primary -outlined" @click="resetPunt">Reset punt</button>
+      <!-- <h1>Admistration de {{ channelId }}</h1> -->
+      <!-- <button class="pof-btn -primary" @click="resetPunt">Reset punt</button> -->
       <p v-if="errorMessage" class="dashboard__error">{{ errorMessage }}</p>
       <div class="dashboard__configuration">
         <label for="nbPlayersPerGame">Nombre de joueurs</label>
@@ -11,13 +11,13 @@
       </div>
       <form @submit.prevent="sendMessageToActive" class="dashboard__send-message">
         <input maxlength="100" type="text" v-model="message" required />
-        <button type="submit" class="btn -primary -outlined" :disabled="!message">
+        <button type="submit" class="pof-btn -primary" :disabled="!message">
           Envoyer un message
         </button>
       </form>
       <div class="dashboard__actions">
-        <button @click="selectNext" class="btn -outlined -primary">Select next</button>
-        <button @click="deleteActive" class="btn -outlined -primary">Supprimer actifs</button>
+        <button @click="selectNext" class="pof-btn -primary">Select next</button>
+        <button @click="deleteActive" class="pof-btn -primary">Supprimer actifs</button>
       </div>
       <div class="dashboard__queues">
         <Queue :queue="nextInQueue" :channel-id="channelId"></Queue>

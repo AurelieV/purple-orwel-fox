@@ -4,7 +4,9 @@
       <img class="user__profile-img" :src="user.profile_image_url" />
       <div class="user__login">{{ user.display_name }}</div>
     </button>
-    <button @click="$emit('delete')" class="btn -outlined -secondary">Supprimer</button>
+    <button v-if="isAdmin" @click="$emit('delete')" class="btn -outlined -secondary">
+      Supprimer
+    </button>
   </div>
 </template>
 
@@ -12,6 +14,7 @@
 export default {
   props: {
     user: { type: Object, required: true },
+    isAdmin: { type: Boolean, default: true },
   },
 }
 </script>
