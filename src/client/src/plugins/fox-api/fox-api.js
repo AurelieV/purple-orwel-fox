@@ -98,4 +98,49 @@ export class FoxApi {
       throw err
     }
   }
+
+  async addToFavorites(channelId) {
+    try {
+      const { data } = await this.sendAuthenticatedRequest({
+        method: 'post',
+        url: `/admin/favorite`,
+        data: {
+          channelId,
+        },
+      })
+      return data.favorites
+    } catch (err) {
+      console.log(err)
+      throw err
+    }
+  }
+
+  async removeFromFavorites(channelId) {
+    try {
+      const { data } = await this.sendAuthenticatedRequest({
+        method: 'delete',
+        url: `/admin/favorite`,
+        data: {
+          channelId,
+        },
+      })
+      return data.favorites
+    } catch (err) {
+      console.log(err)
+      throw err
+    }
+  }
+
+  async getUserInfo() {
+    try {
+      const { data } = await this.sendAuthenticatedRequest({
+        method: 'get',
+        url: `/admin/me`,
+      })
+      return data
+    } catch (err) {
+      console.log(err)
+      throw err
+    }
+  }
 }

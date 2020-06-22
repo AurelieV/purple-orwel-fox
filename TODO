@@ -8,6 +8,8 @@ Archi:
   ☐ Ajouter une bibliothèque d'icône
   ☐ Storybook ajouter les breakpoints
   ☐ Ajouter une doc de style en mdx
+  ☐ Refaire le routing
+  ☐ Change user info call
 
 Design:
   ☐ Style btn-icn
@@ -19,11 +21,9 @@ Design:
   ☐ Checker les options de svg-inline pour dégager le tabindex et autres props
   ✔ Design des notifs @done(20-06-18 18:22)
 
-Bug:
-  ✔ Border radius on hover sur le menu @done(20-06-18 18:49)
-
 
 Before Prod:
+  ☐ Ajouter la redirection stream.purple-fox.fr/api vers twitch-api.purple-fox.fr
   ☐ Set cors policy
   ☐ All config of endpoint depending on env
   ☐ Mettre à jour la config

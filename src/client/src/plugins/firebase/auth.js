@@ -43,9 +43,21 @@ export default class Authentification {
       data: { code },
     })
     const { token, user } = data
-    await this.firebaseAuth.signInWithCustomToken(token)
 
-    return user
+    // Return a promise which resolved only when store is updated
+    // This allows to await this methods and execute logic only when store has correct info
+    return new Promise((resolve, reject) => {
+      // We listen to store change, and unsubscribe as soon as possible
+      const unwatch = this.store.watch(
+        state => state.auth.uid,
+        uid => {
+          if (!uid) return
+          resolve(user)
+          unwatch()
+        }
+      )
+      this.firebaseAuth.signInWithCustomToken(token).catch(reject)
+    })
   }
 
   async logout() {

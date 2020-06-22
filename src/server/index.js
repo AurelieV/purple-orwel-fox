@@ -4,6 +4,7 @@ const firebaseAdmin = require('firebase-admin')
 
 const { start: startAPI } = require('./api')
 const { FoxBot } = require('./bot')
+const { DbApi } = require('./services/db-api')
 const { TwitchApi } = require('./services/twitch-api')
 const { FirebaseApi } = require('./services/firebase-api')
 
@@ -11,6 +12,7 @@ const botConfig = require('../../config/bot.config')
 const twitchConfig = require('../../config/twitch.config')
 const firebaseConfig = require('../../config/firebase.config.json')
 const foxConfig = require('../../config/fox.config')
+const dbConfig = require('../../config/db.config')
 
 const httpsOptions = {
   key: fs.readFileSync(path.resolve(__dirname, '../../config/cert/server.key')),
@@ -22,6 +24,7 @@ firebaseAdmin.initializeApp({
   databaseURL: 'https://purplefox-9131f.firebaseio.com',
 })
 
+const dbApi = new DbApi({ config: dbConfig })
 const firebaseApi = new FirebaseApi({
   db: firebaseAdmin.firestore(),
   firebaseAuth: firebaseAdmin.auth(),
@@ -40,4 +43,5 @@ startAPI({
   twitchConfig,
   firebaseApi,
   foxConfig,
+  dbApi,
 })

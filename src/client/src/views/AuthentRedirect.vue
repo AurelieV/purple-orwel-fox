@@ -30,7 +30,10 @@ export default {
     } catch (err) {
       this.$notifier.error('Impossible de se connecter. Réessayez plus tard.')
     }
-    this.$router.push({ name: 'main' })
+    const redirectPath = localStorage.getItem('redirectPath')
+    localStorage.removeItem('redirectPath')
+    const route = redirectPath ? { path: redirectPath } : { name: 'main' }
+    this.$router.push(route)
   },
 }
 </script>

@@ -3,7 +3,7 @@ import axios from 'axios'
 import https from 'https'
 import { firestorePlugin } from 'vuefire'
 
-import router from './router'
+import createRouter from './router'
 import store from './store'
 import App from './App'
 
@@ -28,7 +28,7 @@ Vue.use(NotificationsPlugin, { store })
 Vue.use(ResponsivePlugin)
 
 new Vue({
-  router,
+  router: createRouter({ store, auth: Vue.prototype.$auth }),
   store,
   render: h => h(App),
 }).$mount('#app')

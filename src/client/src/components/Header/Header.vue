@@ -35,6 +35,7 @@ export default {
     async logout() {
       try {
         await this.$auth.logout()
+        this.$router.push({ name: 'login' })
       } catch {
         this.$notifier.error('Impossible de se déconnecter')
       }

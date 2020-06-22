@@ -1,7 +1,7 @@
 const express = require('express')
 const { createQueueRouter } = require('./queue')
 
-function createAdminRouter({ firebaseApi, twitchApi }) {
+function createAdminRouter({ firebaseApi, twitchApi, dbApi }) {
   const router = new express.Router()
 
   router.post('/login', async (req, res) => {
@@ -43,6 +43,36 @@ function createAdminRouter({ firebaseApi, twitchApi }) {
       await firebaseApi.resetPunt(channelId)
       res.send()
     } catch {
+      res.status(500).send()
+    }
+  })
+
+  router.post('/favorite', async (req, res) => {
+    const channelId = req.body.channelId
+    try {
+      const favorites = await dbApi.addUserFavorite(req.uid, channelId)
+      res.send({ favorites })
+    } catch {
+      res.status(500).send()
+    }
+  })
+
+  router.delete('/favorite', async (req, res) => {
+    const channelId = req.body.channelId
+    try {
+      const favorites = await dbApi.removeUserFavorite(req.uid, channelId)
+      res.send({ favorites })
+    } catch {
+      res.status(500).send()
+    }
+  })
+
+  router.get('/me', async (req, res) => {
+    try {
+      const info = await dbApi.getUserById(req.uid)
+      res.send(info)
+    } catch (err) {
+      console.log('err', err)
       res.status(500).send()
     }
   })
