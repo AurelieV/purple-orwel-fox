@@ -33,6 +33,16 @@ function createRoutes({ store, auth }) {
     },
     { path: '/authent-redirect', component: AuthentRedirect, name: 'redirect' },
     {
+      path: '/stream/:channelId',
+      component: Stream,
+      children: [
+        { path: 'queue', component: CurrentQueue, name: 'current-queue' },
+        { path: 'punt', component: Punt, name: 'punt' },
+        { path: 'punt-counter', component: PuntCounter, name: 'punt-counter' },
+        { path: 'track', component: CurrentTrack, name: 'track' },
+      ],
+    },
+    {
       path: '/',
       component: Main,
       name: 'main',
@@ -46,16 +56,6 @@ function createRoutes({ store, auth }) {
       children: [
         { path: '/old', component: Old },
         { path: '/:channelId/queue', component: Queue },
-      ],
-    },
-    {
-      path: '/stream/:channelId',
-      component: Stream,
-      children: [
-        { path: '/queue', component: CurrentQueue, name: 'current-queue' },
-        { path: '/punt', component: Punt, name: 'punt' },
-        { path: '/punt-counter', component: PuntCounter, name: 'punt-counter' },
-        { path: '/track', component: CurrentTrack, name: 'track' },
       ],
     },
   ]
