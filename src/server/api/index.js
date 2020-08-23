@@ -17,6 +17,11 @@ function start({ port, httpsOptions, twitchApi, twitchConfig, firebaseApi, foxCo
   app.use('/admin', createAdminRouter({ firebaseApi, twitchApi, dbApi }))
   app.use('/chrome', createChromeRouter({ firebaseApi, twitchApi, foxConfig }))
 
+  app.get('/user/:id', async (req, res) => {
+    const login = await twitchApi.getUserByLogin(req.params.id)
+    res.json({ login })
+  })
+
   https.createServer(httpsOptions, app).listen(port)
 }
 

@@ -18,7 +18,7 @@ button {
 .pof-btn {
   padding: $spacing-4 $spacing-5;
   border-radius: 10px;
-  font-size: rem(16px);
+  font-size: $font-size-3;
   box-sizing: border-box;
   background-position: center;
 
@@ -39,5 +39,11 @@ button {
       background: $purple-300;
       color: hsl(hue($purple-300), 20%, lightness($neutral-400));
     }
+  }
+  &.-with-icon {
+    padding: $spacing-2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

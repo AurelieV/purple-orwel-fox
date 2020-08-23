@@ -77,6 +77,34 @@ function createAdminRouter({ firebaseApi, twitchApi, dbApi }) {
     }
   })
 
+  router.get('/channel/:channelId', async (req, res) => {
+    const channelId = req.params.channelId
+    if (!channelId) {
+      return res.status(400).send('Missing channelId')
+    }
+    try {
+      const info = await twitchApi.getUserById(channelId)
+      res.send(info)
+    } catch (err) {
+      res.status(err.response.status === 404 ? 404 : 500).send()
+      console.log(err.response)
+    }
+  })
+
+  router.get('/channel', async (req, res) => {
+    const channelIds = (req.query.channelIds || '').split(',')
+    if (channelIds.length === 0) {
+      return res.status(400).send('Missing channelsId')
+    }
+    try {
+      const info = await twitchApi.getUsersById(channelIds)
+      res.send(info)
+    } catch (err) {
+      res.status(err.response.status === 404 ? 404 : 500).send()
+      console.log(err.response.data)
+    }
+  })
+
   router.use('/queue', createQueueRouter({ firebaseApi, twitchApi }))
   return router
 }

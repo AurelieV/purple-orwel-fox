@@ -64,6 +64,15 @@ class TwitchApi {
     })
     return data[0]
   }
+  async getUsersById(ids) {
+    if (ids.length > 100) return Promise.reject()
+    const params = ids.map((id) => `&id=${id}`).join('&')
+    const { data } = await this.callTwitchApi({
+      method: 'get',
+      url: `https://api.twitch.tv/helix/users?${params}`,
+    })
+    return data
+  }
   createPubSubToken(channelId) {
     const data = {
       exp: Math.floor(Date.now() / 1000) + 30, // 30s expiration

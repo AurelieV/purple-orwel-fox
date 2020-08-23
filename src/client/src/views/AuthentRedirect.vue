@@ -32,7 +32,7 @@ export default {
     }
     const redirectPath = localStorage.getItem('redirectPath')
     localStorage.removeItem('redirectPath')
-    const route = redirectPath ? { path: redirectPath } : { name: 'main' }
+    const route = redirectPath ? { path: redirectPath } : { name: 'main-home' }
     this.$router.push(route)
   },
 }

@@ -10,25 +10,32 @@
       </div>
       <template v-slot:menu-item="{ item }">{{ item.label }}</template>
     </Menu>
+    <portal-target class="pof-header__actions" name="header-actions"></portal-target>
   </header>
 </template>
 
 <script>
 import Menu from '@/components/Menu/Menu'
+import Icon from '@/components/Icon/Icon'
 
 export default {
-  components: { Menu },
-  data() {
-    return {
-      userMenuItems: [{ label: 'Se Déconnecter', key: 'logout' }],
-    }
-  },
+  components: { Menu, Icon },
   computed: {
     channelId() {
       return this.$store.state.auth.uid
     },
     userInfo() {
       return this.$store.state.auth.info
+    },
+    userMenuItems() {
+      return [
+        {
+          label: 'Voir le dashboard',
+          key: 'dashboard',
+          disabled: this.$route?.name === 'main-home',
+        },
+        { label: 'Se Déconnecter', key: 'logout' },
+      ]
     },
   },
   methods: {
@@ -41,8 +48,12 @@ export default {
       }
     },
     onMenuItemClicked({ item }) {
-      if (item.key === 'logout') {
-        this.logout()
+      switch (item.key) {
+        case 'logout':
+          this.logout()
+          break
+        case 'dashboard':
+          this.$router.push({ name: 'main-home' })
       }
     },
   },
@@ -90,6 +101,12 @@ export default {
     color: hsl(hue($primary-color), 20%, lightness($neutral-300));
     font-weight: 300;
     margin-left: $spacing-2;
+  }
+  &__actions {
+    flex: 1 0 auto;
+    // note pour Aurélie du futur: je te l'avais dis que ça te péterais à la gueule !
+    display: flex;
+    justify-content: flex-end;
   }
 }
 </style>

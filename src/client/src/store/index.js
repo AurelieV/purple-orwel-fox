@@ -9,9 +9,14 @@ const RESET_USER_MUTATION = 'Reset user mutation'
 export const UPDATE_USER_ACTION = 'Update user action'
 export const RESET_USER_ACTION = 'Reset user action'
 
+export const IS_FAVORITE = 'Get is favorite'
+
 export default new Vuex.Store({
   state: {
     user: undefined,
+  },
+  getters: {
+    [IS_FAVORITE]: state => channelId => (state.user?.favorites || []).includes(channelId),
   },
   mutations: {
     [RESET_USER_MUTATION](state) {

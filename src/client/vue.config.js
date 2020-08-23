@@ -1,4 +1,5 @@
 const path = require('path')
+const SVGSpritemapPlugin = require('svg-spritemap-webpack-plugin')
 const jsonImporter = require('node-sass-json-importer')
 
 module.exports = {
@@ -46,5 +47,29 @@ module.exports = {
           plugins: [{ cleanupIDs: false }, { collapseGroups: false }],
         },
       })
+  },
+
+  configureWebpack: {
+    plugins: [
+      new SVGSpritemapPlugin(path.resolve(__dirname, './src/assets/icons/**/*.svg'), {
+        output: {
+          filename: 'icons.svg',
+          svgo: {
+            plugins: [
+              {
+                removeAttrs: {
+                  attrs: ['stroke', 'fill'],
+                },
+              },
+            ],
+          },
+        },
+        sprite: {
+          generate: {
+            title: false,
+          },
+        },
+      }),
+    ],
   },
 }

@@ -143,4 +143,31 @@ export class FoxApi {
       throw err
     }
   }
+
+  async getChannelInfo(channelId) {
+    try {
+      const { data } = await this.sendAuthenticatedRequest({
+        method: 'get',
+        url: `/admin/channel/${channelId}`,
+      })
+      return data
+    } catch (err) {
+      console.log(err)
+      throw err
+    }
+  }
+
+  async getChannelsInfo(channelIds) {
+    try {
+      const { data } = await this.sendAuthenticatedRequest({
+        method: 'get',
+        url: `/admin/channel`,
+        params: { channelIds: channelIds.join(',') },
+      })
+      return data
+    } catch (err) {
+      console.log(err)
+      throw err
+    }
+  }
 }

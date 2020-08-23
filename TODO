@@ -2,6 +2,7 @@ Dev:
   ☐ Finir le Readme
 
 Client:
+  ☐ Afficher les favoris dans une grille
   ☐ Avoir une interface de configuration
 
 Archi:
@@ -12,14 +13,12 @@ Archi:
   ☐ Change user info call
 
 Design:
-  ☐ Style btn-icn
   ☐ Gérer la outline en navigation clavier
   ☐ Transition height variable
   ☐ Animation des notifs
   ☐ Light and dark theme?
   ☐ Retoucher les illustrations pour avoir des viewboxs propres
   ☐ Checker les options de svg-inline pour dégager le tabindex et autres props
-  ✔ Design des notifs @done(20-06-18 18:22)
 
 
 Before Prod:

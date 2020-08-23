@@ -9,6 +9,8 @@ import { IS_CONNECTED } from '@/plugins/firebase/store'
 import Main from '@/views/Main'
 import Old from '@/views/Main/Old'
 import Queue from '@/views/Main/Queue'
+import Channel from '@/views/Main/Channel'
+import Home from '@/views/Main/Home'
 
 // Stream
 import Stream from '@/views/Stream'
@@ -28,7 +30,7 @@ function createRoutes({ store, auth }) {
       beforeEnter: async (to, from, next) => {
         await auth.isInitialized
         const isConnected = store.getters[IS_CONNECTED]
-        isConnected ? next({ name: 'main' }) : next()
+        isConnected ? next({ name: 'main-home' }) : next()
       },
     },
     { path: '/authent-redirect', component: AuthentRedirect, name: 'redirect' },
@@ -54,8 +56,10 @@ function createRoutes({ store, auth }) {
         next({ name: 'login' })
       },
       children: [
+        { path: '/', component: Home, exact: true, name: 'main-home' },
         { path: '/old', component: Old },
         { path: '/:channelId/queue', component: Queue },
+        { path: '/channel/:channelId', component: Channel, name: 'channel' },
       ],
     },
   ]

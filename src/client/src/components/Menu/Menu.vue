@@ -18,7 +18,7 @@
           class="pof-menu__item"
           v-for="(item, index) in items"
           :key="index"
-          @click="$emit('itemClicked', { item, index })"
+          @click="onItemClick(item, index)"
           :class="{ '-disabled': item.disabled }"
         >
           <slot name="menu-item" v-bind="{ index, item }"></slot>
@@ -58,6 +58,10 @@ export default {
       if (this.isOpened) {
         this.isOpened = false
       }
+    },
+    onItemClick(item, index) {
+      this.isOpened = false
+      this.$emit('itemClicked', { item, index })
     },
   },
 }

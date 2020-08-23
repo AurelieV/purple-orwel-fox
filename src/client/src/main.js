@@ -6,6 +6,7 @@ import { firestorePlugin } from 'vuefire'
 import createRouter from './router'
 import store from './store'
 import App from './App'
+import PortalVue from 'portal-vue'
 
 import { firebaseConfig, authConfig } from '@/../../../config/client.config'
 
@@ -26,6 +27,7 @@ Vue.use(FirebasePlugin, { store, client, firebaseConfig, authConfig })
 Vue.use(FoxApiPlugin, { store, client, auth: Vue.prototype.$auth })
 Vue.use(NotificationsPlugin, { store })
 Vue.use(ResponsivePlugin)
+Vue.use(PortalVue)
 
 new Vue({
   router: createRouter({ store, auth: Vue.prototype.$auth }),

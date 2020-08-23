@@ -1,4 +1,5 @@
 const path = require('path')
+const SVGSpritemapPlugin = require('svg-spritemap-webpack-plugin')
 import jsonImporter from 'node-sass-json-importer'
 
 module.exports = ({ config }) => {
@@ -6,6 +7,10 @@ module.exports = ({ config }) => {
     '@': path.resolve(__dirname, '../src'),
     '@@': path.resolve(__dirname, '../'),
     assets: path.resolve(__dirname, '../src/assets'),
+  })
+
+  config.module.rules = config.module.rules.filter(rule => {
+    return !rule.test.toString().includes('svg')
   })
 
   config.module.rules.push({
@@ -29,6 +34,28 @@ module.exports = ({ config }) => {
       },
     ],
   })
+
+  config.plugins.push(
+    new SVGSpritemapPlugin(path.resolve(__dirname, '../src/assets/icons/**/*.svg'), {
+      output: {
+        filename: 'icons.svg',
+        svgo: {
+          plugins: [
+            {
+              removeAttrs: {
+                attrs: ['stroke', 'fill'],
+              },
+            },
+          ],
+        },
+      },
+      sprite: {
+        generate: {
+          title: false,
+        },
+      },
+    })
+  )
 
   config.watchOptions = {
     ignored: /node_modules/,
