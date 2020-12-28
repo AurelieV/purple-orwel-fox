@@ -4,10 +4,13 @@ module.exports = {
   '!java': "Moi j'ai rien contre les java-istes. On fait juste pas partie de la même génération :)",
   '!safari': 'Safari is the new IE',
   '!test': 'Si tu ne testes pas ton code, @randymarsh_e va te manger!',
+  '!github': 'https://github.com/AurelieV',
+  '!discord': 'https://discord.gg/sywPdCmJNQ',
+  '!green': 'Green is win',
   '!help': `
     ==> Commandes pour la queue: !jq (join), !lq (leave), !queue (list), !position (position).
     ==> Commandes pour le livecoding: !project: description du projet, !github (lien vers github)
-    ==> Commandes utiles: !song (chanson courante), !punt (si 3 puntos différents petite animation).
-    ==> Commandes pas utiles: !hello, !java, !safari
+    ==> Commandes utiles: !punt (si 3 puntos différents petite animation).
+    ==> Commandes pas utiles: !hello, !java, !safari, !green
     `,
 }
