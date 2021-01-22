@@ -134,6 +134,19 @@ class FirebaseApi {
     return channel.puntCounter
   }
 
+  async triggerGG(channelId) {
+    await this.db
+      .collection('channels')
+      .doc(channelId)
+      .update({
+        ggCounter: FieldValue.increment(1),
+      })
+
+    const channel = await this.getChannelInfo(channelId)
+
+    return channel.ggCounter
+  }
+
   async resetPunt(channelId) {
     await this.db.collection('channels').doc(channelId).update({
       puntCounter: 0,

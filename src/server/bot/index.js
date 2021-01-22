@@ -9,7 +9,9 @@ class FoxBot {
     this.firebaseApi = firebaseApi
     this.twitchApi = twitchApi
     this.puntTimeout = null
+    this.ggTimeout = null
     this.punts = []
+    this.ggs = []
   }
 
   async start() {
@@ -127,6 +129,19 @@ class FoxBot {
     }
   }
 
+  async gg({ roomId, channel, login }) {
+    if (this.ggs.includes(login)) return
+    if (this.ggTimeout) {
+      clearTimeout(this.ggTimeout)
+    }
+    this.ggs.push(login)
+    this.ggTimeout = setTimeout(() => (this.ggs = []), 1000 * 60)
+    if (PUNT_TRIGGER_VALUE === this.ggs.length) {
+      const ggCounter = await this.firebaseApi.triggerGG(roomId)
+      return this.client.say(channel, `GG! Déjà ${ggCounter} fois`)
+    }
+  }
+
   async onMessageHandler(channel, context, msg, self) {
     if (self) return
     if (!msg.startsWith('!')) return
@@ -159,6 +174,9 @@ class FoxBot {
         break
       case '!punt':
         await this.punt({ roomId, channel, login })
+        break
+      case '!gg':
+        await this.gg({ roomId, channel, login })
         break
       default:
         const message = commands[msg]

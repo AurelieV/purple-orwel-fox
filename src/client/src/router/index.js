@@ -15,7 +15,7 @@ import Home from '@/views/Main/Home'
 // Stream
 import Stream from '@/views/Stream'
 import CurrentQueue from '@/views/Stream/CurrentQueue'
-import Punt from '@/views/Stream/Punt'
+import IconAnimation from '@/views/Stream/IconAnimation'
 import PuntCounter from '@/views/Stream/PuntCounter'
 import CurrentTrack from '@/views/Stream/CurrentTrack'
 
@@ -39,7 +39,7 @@ function createRoutes({ store, auth }) {
       component: Stream,
       children: [
         { path: 'queue', component: CurrentQueue, name: 'current-queue' },
-        { path: 'punt', component: Punt, name: 'punt' },
+        { path: 'icon/:icon', component: IconAnimation, name: 'icon-animation' },
         { path: 'punt-counter', component: PuntCounter, name: 'punt-counter' },
         { path: 'track', component: CurrentTrack, name: 'track' },
       ],

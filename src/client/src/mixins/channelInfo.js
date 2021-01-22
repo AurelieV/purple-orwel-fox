@@ -9,7 +9,10 @@ export default {
       return this.$route.params.channelId
     },
     puntCounter() {
-      return this.channel && this.channel.puntCounter
+      return (this.channel && this.channel.puntCounter) || 0
+    },
+    ggCounter() {
+      return (this.channel && this.channel.ggCounter) || 0
     },
     currentTrack() {
       return this.channel && this.channel.track

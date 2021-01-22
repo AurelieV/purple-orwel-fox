@@ -1,9 +1,9 @@
 <template>
-  <div class="punt-page">
+  <div class="icon-animation">
     <transition name="rotate">
       <div v-if="isDisplayed">
-        <img src="/sunglass.png" />
-        <p>OUPS</p>
+        <img :src="images[icon]" />
+        <p>{{ text[icon] }}</p>
       </div>
     </transition>
   </div>
@@ -17,7 +17,23 @@ export default {
     return {
       isDisplayed: false,
       displayedTimeout: null,
+      images: {
+        punt: '/sunglass.png',
+        gg: '/gg.png',
+      },
+      text: {
+        punt: 'Oups',
+        gg: 'Oh yeah',
+      },
     }
+  },
+  computed: {
+    icon() {
+      return this.$route.params.icon
+    },
+    counter() {
+      return this[`${this.icon}Counter`]
+    },
   },
   destroyed() {
     if (this.displayedTimeout) {
@@ -25,7 +41,7 @@ export default {
     }
   },
   watch: {
-    puntCounter(val, oldVal) {
+    counter(val, oldVal) {
       if (oldVal === undefined || val === 0 || this.isDisplayed) return
       if (this.displayedTimeout) {
         clearTimeout(this.displayedTimeout)
@@ -39,7 +55,7 @@ export default {
 </script>
 
 <style lang="scss">
-.punt-page {
+.icon-animation {
   width: 400px;
   height: 400px;
   font-size: 40px;
