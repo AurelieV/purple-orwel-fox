@@ -11,7 +11,9 @@ module.exports = {
   '!vue': 'Le vrai meilleur framework JS',
   '!skarab':
     "Un streameur trop cool, avec un live plein d'interactions. Checkez son projet https://marv-site.web.app/fr/home/",
-  '!multi': 'https://www.multitwitch.tv/skarab42/purpleorwel',
+  '!weweb': 'https://www.weweb.io/',
+  '!hn': 'Upvote us on https://news.ycombinator.com/',
+  '!doc': 'https://developer.weweb.io/',
   '!help': `
     ==> Commandes pour la queue: !jq (join), !lq (leave), !queue (list), !position (position).
     ==> Commandes pour le livecoding: !github (lien vers github), !theme
